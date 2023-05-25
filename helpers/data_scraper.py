@@ -36,7 +36,7 @@ def get_professors(item: any):
             if len(flag) > 0:
                 profs = []
                 list = tab.find_all("li")
-                if len(list) > 0 :
+                if len(list) > 0:
                     for li in list:
                         profs.append(li.text)
                     return profs
@@ -73,7 +73,7 @@ def get_horaire(item: any):
     for tab in tables:
         # finds the right table
         flag_table = tab.find_all(lambda tag: tag.name == "th"
-                                  and "Jour" in tag.text) 
+                                  and "Jour" in tag.text)
         if len(flag_table) > 0:
             horaires = []
             # finds rows with data
@@ -101,8 +101,8 @@ def scrape_class_info(course: str, current_year: str, semester: str, program):
     try:
         URL = f"""https://etudier.uqam.ca/wshoraire/cours/{course}/
         {current_year}{semester}/{program}"""
-        html_doc = requests.get(URL).text 
-        soup = BeautifulSoup(html_doc, "html.parser") 
+        html_doc = requests.get(URL).text
+        soup = BeautifulSoup(html_doc, "html.parser")
         groups = soup.find_all("div", {"class": "groupe"})
         infos_cours = []
         for item in groups:
@@ -115,12 +115,9 @@ def scrape_class_info(course: str, current_year: str, semester: str, program):
                 "horaires": get_horaire(item)
                         }
             infos_cours.append(json_obj)
-        return json.dumps(infos_cours) 
+        return json.dumps(infos_cours)
     except AttributeError:
         return []
-    
+
 
 # print(scrape_class_info("INF5190","2023",SEMESTER_ID["fall"],"7316"))
-
-
-
