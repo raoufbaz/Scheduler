@@ -1,4 +1,5 @@
 from flask import Flask, render_template
+from helpers import data_scraper
 
 app = Flask(__name__)
 
