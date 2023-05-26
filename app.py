@@ -9,9 +9,6 @@ def hello():
     return render_template('index.html'), 200
 
 
-
-
 @app.route('/page2')
-def hello1 ():
-    return render_template('layout.html'),200
-
+def hello1():
+    return render_template('layout.html'), 200
