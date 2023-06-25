@@ -120,4 +120,34 @@ def scrape_class_info(course: str, current_year: str, semester: str, program):
         return []
 
 
+def get_all_courses_data(program_id: str):
+    # call to other functions
+    return 0
+
 # print(scrape_class_info("INF5190","2023",SEMESTER_ID["fall"],"7316"))
+
+
+# a utiliser dans la section selection par cours
+def get_course_title_and_id(course_name: str):
+    URL = f"https://etudier.uqam.ca/cours?sigle=INF1132"
+    # get h1 class title.text
+    # get div.class related-programs > ul > (list of li, for each decortiquer url de <a>.href:
+    # <a href="/programme?code=6571">Baccalauréat en économique</a>)
+    return 0
+
+
+def get_program_courses(program_id: str):
+    URL = f"https://etudier.uqam.ca/programme?code={program_id}#bloc_cours"
+    html_doc = requests.get(URL).text
+    soup = BeautifulSoup(html_doc, "html.parser")
+    courses_list_raw = soup.find_all("div", {"class": "bloc_cours"})
+    courses_list = []
+    for item in courses_list_raw:
+        tag = item.find("a")
+        courses_list.append(tag.text)
+        print(tag.text)
+    return courses_list
+
+
+# print(get_program_courses("7416"))
+get_program_courses("7416")
