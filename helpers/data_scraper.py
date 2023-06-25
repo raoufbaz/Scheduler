@@ -129,7 +129,7 @@ def get_all_courses_data(program_id: str):
 
 # a utiliser dans la section selection par cours
 def get_course_title_and_id(course_name: str):
-    URL = f"https://etudier.uqam.ca/cours?sigle=INF1132"
+    #  URL = f"https://etudier.uqam.ca/cours?sigle=INF1132"
     # get h1 class title.text
     # get div.class related-programs > ul > (list of li, for each decortiquer url de <a>.href:
     # <a href="/programme?code=6571">Baccalauréat en économique</a>)
