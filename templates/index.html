@@ -34,13 +34,13 @@
                     <!-- SESSION -->
                      <div class="row justify-content-center align-items-center g-2">
                         <div class="col-8 btn-group" role="group" aria-label="Basic radio toggle button group">
-                            <input type="radio" value="Automne" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
+                            <input type="radio" value="Automne" class="btn-check" name="session" id="btnradio1" autocomplete="off" checked>
                              <label class="btn btn-outline-primary" for="btnradio1">Automne</label>
                       
-                            <input type="radio" value="Hiver" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
+                            <input type="radio" value="Hiver" class="btn-check" name="session" id="btnradio2" autocomplete="off">
                             <label class="btn btn-outline-primary" for="btnradio2">Hiver</label>
                       
-                            <input type="radio" value="Ete" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off">
+                            <input type="radio" value="Ete" class="btn-check" name="session" id="btnradio3" autocomplete="off">
                             <label class="btn btn-outline-primary" for="btnradio3">Ete</label>
                         </div>
                     </div>
@@ -50,7 +50,7 @@
                    <div class="col-6">
                      <label for="input" class="form-label">Rechercher un programme :</label>
                      <input type="text"
-                       class="form-control w-5" name="query" id="input" aria-describedby="helpId" placeholder="" autocomplete="off">
+                       class="form-control w-5" name="id" id="input" aria-describedby="helpId" placeholder="" autocomplete="off">
                      <small id="helpId" class="form-text text-muted">Nom ou numero du programme</small>
                    </div>
                 </div>
@@ -59,6 +59,7 @@
                         Rechercher
                        </button></div>
                 </div>
+                <input type="hidden" name="title" id="program_title" value="">
         </form>
     </div>
     <!-- TAB COURS -->

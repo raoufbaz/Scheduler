@@ -14,6 +14,32 @@ SEMESTER_ID = {
 # f"https://etudier.uqam.ca/wshoraire/cours/INF1120/20233/7316"
 
 
+# Scrapes all available info on a class
+# Parameters are needed to build the URL
+# Returns JSON Object with result or empty
+def scrape_class_info(course: str, current_year: str, semester: str, program):
+    try:
+        URL = f"""https://etudier.uqam.ca/wshoraire/cours/{course}/
+        {current_year}{semester}/{program}"""
+        html_doc = requests.get(URL).text
+        soup = BeautifulSoup(html_doc, "html.parser")
+        groups = soup.find_all("div", {"class": "groupe"})
+        infos_cours = []
+        for item in groups:
+            json_obj = {
+                "groupe": get_group(item),
+                "nb_places": get_places(item),
+                "enseignants": get_professors(item),
+                "remarques": get_remarques(item),
+                "modalite": get_modalite(item),
+                "horaires": get_horaire(item)
+                        }
+            infos_cours.append(json_obj)
+        return json.dumps(infos_cours)
+    except AttributeError:
+        return []
+
+
 def get_group(item: any):
     group = item.find(class_="no_groupe")
     if group is not None:
@@ -94,32 +120,6 @@ def get_horaire(item: any):
                 return horaires
 
 
-# Scrapes all available info on a class
-# Parameters are needed to build the URL
-# Returns JSON Object with result or empty
-def scrape_class_info(course: str, current_year: str, semester: str, program):
-    try:
-        URL = f"""https://etudier.uqam.ca/wshoraire/cours/{course}/
-        {current_year}{semester}/{program}"""
-        html_doc = requests.get(URL).text
-        soup = BeautifulSoup(html_doc, "html.parser")
-        groups = soup.find_all("div", {"class": "groupe"})
-        infos_cours = []
-        for item in groups:
-            json_obj = {
-                "groupe": get_group(item),
-                "nb_places": get_places(item),
-                "enseignants": get_professors(item),
-                "remarques": get_remarques(item),
-                "modalite": get_modalite(item),
-                "horaires": get_horaire(item)
-                        }
-            infos_cours.append(json_obj)
-        return json.dumps(infos_cours)
-    except AttributeError:
-        return []
-
-
 def get_all_courses_data(program_id: str):
     # call to other functions
     return 0
@@ -131,11 +131,15 @@ def get_all_courses_data(program_id: str):
 def get_course_title_and_id(course_name: str):
     #  URL = f"https://etudier.uqam.ca/cours?sigle=INF1132"
     # get h1 class title.text
-    # get div.class related-programs > ul > (list of li, for each decortiquer url de <a>.href:
+    # get div.class related-programs > ul >
+    # (list of li, for each decortiquer url de <a>.href:
     # <a href="/programme?code=6571">Baccalauréat en économique</a>)
     return 0
 
 
+# Scrapes all courses related to a certain program
+# Needs a program id to retrieve data
+# Returns a json object list of the courses
 def get_program_courses(program_id: str):
     URL = f"https://etudier.uqam.ca/programme?code={program_id}#bloc_cours"
     html_doc = requests.get(URL).text
@@ -144,8 +148,15 @@ def get_program_courses(program_id: str):
     courses_list = []
     for item in courses_list_raw:
         tag = item.find("a")
-        courses_list.append(tag.text)
-        print(tag.text)
+        trimmed = tag.text.strip()
+        split_strings = trimmed.split(" - ")
+        id, title = split_strings
+        json_obj = {
+                "id": id,
+                "title": title
+                }
+        courses_list.append(json_obj)
+    courses_list = json.dumps(courses_list)
     return courses_list
 
 
