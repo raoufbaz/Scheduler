@@ -35,5 +35,5 @@ create a pull request on github.
 git remote add upstream https://github.com/raoufbaz/Scheduler.git
 
 # Pull
-git pull upstream main 
+git pull upstream dev
 ```
