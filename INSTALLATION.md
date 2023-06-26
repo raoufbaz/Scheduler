@@ -19,7 +19,7 @@ Install the dependencies
 You can now run the App
 
 ```bash
- flask  --debug run
+ flask --debug run 
 ```
 
 ## Documentation

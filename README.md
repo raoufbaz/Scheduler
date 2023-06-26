@@ -24,7 +24,8 @@ git clone <your-forked-repo>
 
 git checkout -b my-fix
 # add some code...
-
+git status
+git add .
 git commit -m "fix: corrected a typo"
 git push origin my-fix
 
@@ -35,5 +36,5 @@ create a pull request on github.
 git remote add upstream https://github.com/raoufbaz/Scheduler.git
 
 # Pull
-git pull upstream dev
+git pull upstream dev 
 ```
