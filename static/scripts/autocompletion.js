@@ -1,5 +1,7 @@
-var programInput = document.getElementById("program_id");
+var programInput = document.getElementById("program_title");
 var dropdownMenu = document.getElementById("dropdown-menu");
+var programId = document.getElementById("program_id");
+
 
 programInput.addEventListener("input", function() {
   var inputText = programInput.value;
@@ -17,12 +19,14 @@ programInput.addEventListener("input", function() {
           var option = document.createElement("a");
           option.className = "dropdown-item";
           option.href = "#";
-          option.innerText = suggestions[i];
+          option.innerText = suggestions[i].title;
+          var code = suggestions[i].code;
 
           // Add event listener to suggestions
           option.addEventListener("click", function() {
             programInput.value = this.innerText;
             dropdownMenu.style.display = "none";
+            programId.value = code;
           });
 
           dropdownMenu.appendChild(option);

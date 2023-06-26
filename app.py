@@ -26,8 +26,13 @@ def autocomplete():
         return jsonify([])
 
     programs_list = json.loads(liste_programmes)
-    suggestions = [program['title'] for program in programs_list
-                   if input_text.lower() in program['title'].lower()][:5]
+    suggestions = [
+        {
+            'title': program['title'],
+            'code': program['code']
+        }
+        for program in programs_list
+        if input_text.lower() in program['title'].lower()][:5]
     return jsonify(suggestions)
 
 
