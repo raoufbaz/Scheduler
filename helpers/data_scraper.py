@@ -186,6 +186,10 @@ def get_program_courses(program_id: str):
     return json.dumps(load_courses_from_cache(program_id))
 
 
+# Scrapes all programs from the website
+# saves a copy on cache file,
+# then loads the file every time the function is called
+# Returns a json object list of the programs
 def get_programs():
     cached_programs = load_programs_from_cache()
     if cached_programs:
@@ -217,18 +221,31 @@ def get_programs():
     return json.dumps(load_programs_from_cache())
 
 
+# Saves the programs list in a cache file
+# requires the list of programs as parameter
 def save_programs_to_cache(programs: list):
-    with open("cache_programs.json", "w") as file:
+    cache_dir = "cache"
+    os.makedirs(cache_dir, exist_ok=True)
+
+    with open("cache/cache_programs.json", "w") as file:
         json.dump(programs, file, indent=4)
 
 
+# Saves the courses list in a cache file
+# requires the list of courses and the programID as parameter
 def save_courses_to_cache(program_id: str, courses: list):
-    with open(f"cache_{program_id}_courses.json", "w") as file:
+    cache_dir = "cache"
+    os.makedirs(cache_dir, exist_ok=True)
+
+    cache_file = f"cache/cache_{program_id}_courses.json"
+    with open(cache_file, "w") as file:
         json.dump(courses, file, indent=4)
 
 
+# Loads the programs list from the cache file
+# returns the json file if exists or None
 def load_programs_from_cache():
-    filename = "cache_programs.json"
+    filename = "cache/cache_programs.json"
     if os.path.exists(filename):
         try:
             with open(filename, "r") as file:
@@ -238,8 +255,10 @@ def load_programs_from_cache():
     return None
 
 
+# Loads the courses list from the cache file
+# returns the json file if exists or None
 def load_courses_from_cache(program_id):
-    filename = f"cache_{program_id}_courses.json"
+    filename = f"cache/cache_{program_id}_courses.json"
     if os.path.exists(filename):
         try:
             with open(filename, "r") as file:
@@ -251,4 +270,4 @@ def load_courses_from_cache(program_id):
 
 # print(get_program_courses("7416"))
 # get_program_courses("7416")
-get_programs()
+# get_programs()
