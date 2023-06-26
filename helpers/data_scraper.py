@@ -127,14 +127,30 @@ def get_all_courses_data(program_id: str):
 # print(scrape_class_info("INF5190","2023",SEMESTER_ID["fall"],"7316"))
 
 
-# a utiliser dans la section selection par cours
-def get_course_title_and_id(course_name: str):
-    #  URL = f"https://etudier.uqam.ca/cours?sigle=INF1132"
-    # get h1 class title.text
-    # get div.class related-programs > ul >
-    # (list of li, for each decortiquer url de <a>.href:
-    # <a href="/programme?code=6571">Baccalauréat en économique</a>)
-    return 0
+# Scrapes course title and program id
+# Needs a course name to retrieve data
+# Returns a json object with the title and program id
+def get_course_title_and_program_id(course_name: str):
+    URL = f"https://etudier.uqam.ca/cours?sigle={course_name}"
+    html_doc = requests.get(URL).text
+    soup = BeautifulSoup(html_doc, "html.parser")
+    course_title_raw = soup.find("h1", {"class": "title"})
+    title = course_title_raw.text
+    trimmed = title.strip()
+    split_strings = trimmed.split(" - ")
+    title = split_strings[1]
+    course_id_raw = soup.find("div", {"class": "related-programs bloc"})
+    a_tag = course_id_raw.find("a")
+    href = a_tag.get('href')
+    id_split_strings = href.split("=")
+    id = id_split_strings[1]
+    if not title or not id:
+        return ""
+    json_obj = {
+            "program_id": id,
+            "title": title
+            }
+    return json.dumps(json_obj)
 
 
 # Scrapes all courses related to a certain program
@@ -161,4 +177,4 @@ def get_program_courses(program_id: str):
 
 
 # print(get_program_courses("7416"))
-get_program_courses("7416")
+# get_program_courses("7416")
