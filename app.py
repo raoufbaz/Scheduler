@@ -14,18 +14,23 @@ def get_page_cours():
     return render_template('choix_cours_template.html'), 200
 
 
-#  Recherche par programme, redirige vers liste des cours
+#  Search by program ID, redirects to list of courses, else back
+#  to page with error message
 @app.route('/programme', methods=['GET'])
 def get_programme():
-    semester = request.args.get('session')  # get inputs from form
-    id = request.args.get('id')
-    title = request.args.get('titre')
-    title = "Genie logiciel test"
-    # if not session or not query:
-    # return jsonify({"error": "Donnée manquante, 2 parametres sont attendu"
-    #                     }), 400
-    # if fonction de validation des champs
-    list = data_scraper.get_program_courses(id)
+    semester = request.args.get('semester')  # get inputs from form
+    program_id = request.args.get('program_id')
+    program_title = request.args.get('program_title')
+    program_title = "PROGRAM_TITLE_PLACEHOLDER"
+    # Empty parameters validation
+    if not semester or not program_id or not program_title:
+        error = "Le champs ne peut pas etre vide."
+        return render_template("index.html", error=error), 400
+    list = data_scraper.get_program_courses(program_id)
+    # empty list validation
+    if list == "[]":
+        error = "Entrez un nom de programme valide."
+        return render_template("index.html", error=error), 400
     list = json.loads(list)
-    return render_template('choix_cours.html', courses=list, title=title,
-                           semester=semester), 200
+    return render_template('choix_cours.html', courses=list,
+                           title=program_title, semester=semester), 200
