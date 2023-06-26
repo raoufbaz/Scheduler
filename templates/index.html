@@ -54,9 +54,11 @@
                      class="form-control w-5 border-danger" name="program_id" id="program_id" aria-describedby="helpId" placeholder="" autocomplete="off">
                     <small id="helpId" class="form-text text-danger">{{ error }}</small>
                      {% else %}
-                     <input type="text" 
-                     class="form-control w-5" name="program_id" id="program_id" aria-describedby="helpId" placeholder="" autocomplete="off">
-                    <small id="helpId" class="form-text text-muted">Nom ou numero du programme</small>
+                     <input type="text" class="form-control w-5" name="program_id" id="program_id" aria-describedby="helpId" placeholder="" autocomplete="off">
+                     <div id="dropdown-menu" class="dropdown-menu">
+                      <!-- Liste des suggestions afficher ici -->
+                     </div>
+                     <small id="helpId" class="form-text text-muted">Nom ou numero du programme</small>
                      {% endif %}
                    </div>
                 </div>
@@ -68,6 +70,8 @@
                 </div>
                 <input type="hidden" name="program_title" id="program_title" value="">
         </form>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="{{ url_for('static', filename='scripts/autocompletion.js') }}"></script>
     </div>
     <!-- TAB COURS -->
         <div class="tab-pane fade border" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab"> 

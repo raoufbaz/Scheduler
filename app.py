@@ -1,17 +1,34 @@
-from flask import Flask, json, render_template, request
+from flask import Flask, json, render_template, request, jsonify
 from helpers import data_scraper
 
 app = Flask(__name__)
+liste_programmes = []
 
 
 @app.route('/')
 def get_page_index():
+    global liste_programmes
+    if not liste_programmes:
+        liste_programmes = data_scraper.get_programs()
+
     return render_template('index.html'), 200
 
 
 @app.route('/cours')
 def get_page_cours():
     return render_template('choix_cours_template.html'), 200
+
+
+@app.route('/autocomplete')
+def autocomplete():
+    input_text = request.args.get('input_text')
+    if len(input_text) < 3:
+        return jsonify([])
+
+    programs_list = json.loads(liste_programmes)
+    suggestions = [program['title'] for program in programs_list
+                   if input_text.lower() in program['title'].lower()][:5]
+    return jsonify(suggestions)
 
 
 #  Search by program ID, redirects to list of courses, else back
