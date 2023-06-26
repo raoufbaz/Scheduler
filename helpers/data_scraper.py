@@ -2,6 +2,7 @@ from bs4 import BeautifulSoup
 # from datetime import date, datetime
 import requests
 import json
+import os
 
 SEMESTER_ID = {
     "not_found": "0",
@@ -157,6 +158,12 @@ def get_course_title_and_program_id(course_name: str):
 # Needs a program id to retrieve data
 # Returns a json object list of the courses
 def get_program_courses(program_id: str):
+    # Check if courses are already cached
+    cached_courses = load_courses_from_cache(program_id)
+    if cached_courses:
+        print("--- Loading Courses From CACHE ---")
+        return json.dumps(load_courses_from_cache(program_id))
+
     URL = f"https://etudier.uqam.ca/programme?code={program_id}#bloc_cours"
     html_doc = requests.get(URL).text
     soup = BeautifulSoup(html_doc, "html.parser")
@@ -172,9 +179,76 @@ def get_program_courses(program_id: str):
                 "title": title
                 }
         courses_list.append(json_obj)
-    courses_list = json.dumps(courses_list)
-    return courses_list
+
+    print("--- Saving Courses To CACHE ---")
+    save_courses_to_cache(program_id, courses_list)
+
+    return json.dumps(load_courses_from_cache(program_id))
+
+
+def get_programs():
+    cached_programs = load_programs_from_cache()
+    if cached_programs:
+        print("--- Loading Programs From CACHE ---")
+        return json.dumps(cached_programs)
+
+    programs_list = []
+    URL = "https://etudier.uqam.ca/programmes"
+    html_doc = requests.get(URL).text
+    soup = BeautifulSoup(html_doc, "html.parser")
+    programs_table = soup.find('table', {'id': 'tableProgrammes'})
+    rows = programs_table.find_all('tr')
+    for row in rows:
+        tag_td = row.find("a")
+        if (tag_td):
+            title = tag_td.text.strip()
+
+        code_td = row.find('td', {'class': 'code'})
+        if (code_td):
+            code = code_td.text.strip()
+
+        if (tag_td and code_td):
+            program = {'code': code, 'title': title}
+            programs_list.append(program)
+
+    print("--- Saving Programs To CACHE ---")
+    save_programs_to_cache(programs_list)
+
+    return json.dumps(load_programs_from_cache())
+
+
+def save_programs_to_cache(programs: list):
+    with open("cache_programs.json", "w") as file:
+        json.dump(programs, file, indent=4)
+
+
+def save_courses_to_cache(program_id: str, courses: list):
+    with open(f"cache_{program_id}_courses.json", "w") as file:
+        json.dump(courses, file, indent=4)
+
+
+def load_programs_from_cache():
+    filename = "cache_programs.json"
+    if os.path.exists(filename):
+        try:
+            with open(filename, "r") as file:
+                return json.load(file)
+        except (FileNotFoundError, json.JSONDecodeError):
+            return None
+    return None
+
+
+def load_courses_from_cache(program_id):
+    filename = f"cache_{program_id}_courses.json"
+    if os.path.exists(filename):
+        try:
+            with open(filename, "r") as file:
+                return json.load(file)
+        except (FileNotFoundError, json.JSONDecodeError):
+            return None
+    return None
 
 
 # print(get_program_courses("7416"))
 # get_program_courses("7416")
+get_programs()
