@@ -26,8 +26,13 @@ def autocomplete():
         return jsonify([])
 
     programs_list = json.loads(liste_programmes)
-    suggestions = [program['title'] for program in programs_list
-                   if input_text.lower() in program['title'].lower()][:5]
+    suggestions = [
+        {
+            'title': program['title'],
+            'code': program['code']
+        }
+        for program in programs_list
+        if input_text.lower() in program['title'].lower()][:5]
     return jsonify(suggestions)
 
 
@@ -37,8 +42,7 @@ def autocomplete():
 def get_programme():
     semester = request.args.get('semester')  # get inputs from form
     program_id = request.args.get('program_id')
-    program_title = request.args.get('program_title')
-    program_title = "PROGRAM_TITLE_PLACEHOLDER"
+    program_title = program_id + " - " + request.args.get('program_title')
     # Empty parameters validation
     if not semester or not program_id or not program_title:
         error = "Le champs ne peut pas etre vide."
