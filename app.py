@@ -42,7 +42,8 @@ def autocomplete():
 def get_programme():
     program_id = request.args.get('program_id')
     program_title = request.args.get('program_title')
-    program_title = program_id + " - " + request.args.get('program_title')
+    print(program_id)
+    print(program_title)
     # Empty parameters validation
     if not program_id or not program_title:
         error = "Le champs ne peut pas etre vide."

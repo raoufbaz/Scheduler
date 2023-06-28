@@ -19,14 +19,15 @@ programInput.addEventListener("input", function() {
           var option = document.createElement("a");
           option.className = "dropdown-item";
           option.href = "#";
-          option.innerText = suggestions[i].title;
-          var code = suggestions[i].code;
+          option.value=suggestions[i].code;
+          option.innerText = suggestions[i].code + ' - '+ suggestions[i].title;
+          
 
           // Add event listener to suggestions
           option.addEventListener("click", function() {
             programInput.value = this.innerText;
             dropdownMenu.style.display = "none";
-            programId.value = code;
+            programId.value = this.value;
           });
 
           dropdownMenu.appendChild(option);
@@ -52,5 +53,19 @@ programInput.addEventListener("input", function() {
 window.addEventListener("click", function(event) {
   if (!programInput.contains(event.target)) {
     dropdownMenu.style.display = "none";
+  }
+});
+
+// Close the dropdown menu when clicking outside of it
+window.addEventListener("click", function(event) {
+  if (!programInput.contains(event.target)) {
+    dropdownMenu.style.display = "none";
+  }
+});
+
+// reset program_id value when program_title is reset.
+programInput.addEventListener("input", function(event) {
+  if (programInput.value === '') {
+    programId.value ="";
   }
 });
