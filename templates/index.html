@@ -51,12 +51,11 @@
                      <label for="input" class="form-label">Rechercher un programme :</label>
                      {% if error %}
                      <input type="text" 
-                     class="form-control w-5 border-danger" name="program_id" id="program_id" aria-describedby="helpId" placeholder="" autocomplete="off">
+                     class="form-control w-5 border-danger" name="program_title" id="program_title" aria-describedby="helpId" placeholder="" autocomplete="off" required>
                     <small id="helpId" class="form-text text-danger">{{ error }}</small>
                      {% else %}
-                     <input type="text" class="form-control w-5" name="program_id" id="program_id" aria-describedby="helpId" placeholder="" autocomplete="off">
+                     <input type="text" class="form-control w-5" name="program_title" id="program_title" aria-describedby="helpId" placeholder="" autocomplete="off" required>
                      <div id="dropdown-menu" class="dropdown-menu">
-                      <!-- Liste des suggestions afficher ici -->
                      </div>
                      <small id="helpId" class="form-text text-muted">Nom ou numero du programme</small>
                      {% endif %}
@@ -68,7 +67,7 @@
                         Rechercher
                        </button></div>
                 </div>
-                <input type="hidden" name="program_title" id="program_title" value="">
+                <input type="hidden" name="program_id" id="program_id" value="">
         </form>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="{{ url_for('static', filename='scripts/autocompletion.js') }}"></script>
