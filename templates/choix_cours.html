@@ -1,43 +1,140 @@
-{% extends "layout.html" %} {% block content %}
-<!-- HEADER -->
-<section>
-  <div class="row justify-content-center">
-    <div class="col-md-12 text-center mt-5 pt-4">
-      <span class="display-4 d-block">
-        {% if title %}
-        {{ title }}
-        {% endif %}
-      </span>
-    </div>
-  </div>
-</section>
+{% extends "layout.html" %} 
+{% block content %}
 
-<!-- LISTE COURS  -->
-{% if courses %}
-<section>
-  <!-- <style>
-    .btn {
-      --bs-btn-padding-x: 0;
-      --bs-btn-padding-y: 0;}
-  </style> -->
-  <div class="container">
-  <div class="row justify-content-center mt-5">
-    <div class="col-8">
-      <div class="row  row-cols-auto">
-        {% for cours in courses %}
-        <div class="col">
-          <div class="card text-center mt-2">
-            <div class="card-body">{{ cours.id }}</div>
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-11 rounded bg-light">
+    <!-- HEADER -->
+    {% if title %}
+    <h2 class="text-center mt-3">{{ title }}</h2>
+    {% else %}
+    <h2 class="text-center mt-3">TITLE PLACEHOLDER</h2>
+    {% endif %}
+      <div class="row mt-5">
+        <h5 class="display-8">Selectionnez vos cours :</h5>
+        <div class="row mt-4">
+          <div class="col">
+            Session : 
+            <div class="btn-group"> 
+              
+                  <input type="radio" value="Automne" class="btn-check" name="semester" id="btnradio1" autocomplete="off" checked>
+                   <label class="btn btn-outline-primary" for="btnradio1">A23</label>
+            
+                  <input type="radio" value="Hiver" class="btn-check" name="semester" id="btnradio2" autocomplete="off">
+                  <label class="btn btn-outline-primary" for="btnradio2">H24</label>
+            
+                  <input type="radio" value="Ete" class="btn-check" name="semester" id="btnradio3" autocomplete="off">
+                  <label class="btn btn-outline-primary" for="btnradio3">E23</label>
           </div>
         </div>
-        {% endfor %}
+        <div class="col">
+          Mode : 
+          <div class="btn-group" role="group" aria-label="Checkbox Button Group">
+            <input type="checkbox" id="checkbox1" class="btn-check check" autocomplete="off">
+            <label class="btn btn-outline-primary " for="checkbox1">Virtuel
+              <img src="{{ url_for('static', filename='images/computer.png') }}" width="15" height="15" alt="">
+            </label>
+          </div>
+          
+          <script>
+            $(document).ready(function() {
+              $('.check').click(function() {
+                var isChecked = $(this).prop('checked');
+                if (isChecked) {
+                  $(this).addClass('active');
+                } else {
+                  $(this).next('.btn').removeClass('active');
+                }
+              });
+            });
+
+            $(document).ready(function() {
+              $('.checkk').click(function() {
+                var isChecked = $(this).prop('checked');
+                if (isChecked) {
+                  $(this).addClass('active');
+                  $(this).removeClass('bg-light');
+                  $(this).addClass('bg-secondary');
+                } else {
+                  $(this).removeClass('active');
+                  $(this).removeClass('bg-secondary');
+                  $(this).addClass('bg-light');
+                }
+              });
+            });
+          </script>
+   
+            </label>
+         
+        </div>
+        <div class="col">
+          
+            
+                <input type="button" value="Automne" class="btn-check" name="semester" id="btnradio1" autocomplete="off" checked>
+                 <label class="btn btn-outline-danger" for="btnradio1">Reset</label>
+          
+               
       </div>
-      
+      </div>
+        </div>
+  <!-- LISTE COURS -->
+{% if courses %}
+<div class="row mt-3 pb-3">
+  <form action="/agendas" method="post">
+    <div class="row justify-content-center">
+    <div class="col-11 border border-secondary rounded">
+      <div class="row mt-3 mb-3">
+      <!-- START COLS -->
+      {% for cours in courses %}
+        <div class="col mt-2">
+          <div class="btn-group"> 
+          <input type="checkbox" id="{{cours.id}}" class="btn-check checkk shadow-lg" name="">
+          <label style="width: 120px;" class="btn bg-light border border-secondary" for="{{cours.id}}">{{cours.id}}
+            <img src="{{ url_for('static', filename='images/computer.png') }}" width="15" height="15" alt="">
+          </label>
+          <button type="button" class="btn btn-outline-secondary">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+              <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+            </svg>
+          </button>
+        </div>
+        </div>
+        {% endfor %}
+        <!-- END COLS -->
+      </div>
+      </div>
     </div>
-  </div>
+     <!-- COURS HORS PROGRAMME -->
+     <div class="row mt-3">
+     <h5 class="display-8">Ajouter un cours hors programme :</h5>
+      <div class="col-6">
+        
+      </div>
+    <p>à venir</p>
+    </div>
+    <!-- FILTRES -->
+    <div class="row mt-3">
+      <h5 class="display-8">Filtres :</h5>
+    <p>à venir</p>
+    </div>
+
+    <div class="row justify-content-end mt-3">
+      <div class="col-2">
+        <button type="submit" class="btn btn-primary">Soumettre</button>
+      </div>
+    </div>
+  </form>
 </div>
-</section>
 {% endif %}
+<!-- END LISTE COURS -->
+</div>
+
+</div>
+</div>
+
+
+
+
 
 
 {% endblock %}

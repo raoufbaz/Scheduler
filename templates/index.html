@@ -11,7 +11,7 @@
                     <button type="button" class="text-align-center btn btn-outline-light">Voir les fonctionnalités</button>
                 </div>
                 <div class="col-6">
-                    <img src="{{ url_for('static', filename='schedule-template-featured.svg') }}" class="img-fluid rounded float-start" width="400" height="300" alt="">
+                    <img src="{{ url_for('static', filename='images/schedule-template-featured.svg') }}" class="img-fluid rounded float-start" width="400" height="300" alt="">
                     
                 </div>
             </div>
@@ -64,6 +64,6 @@
     programInput.attributes[7].value = "{{error}}";
 </script>
 {% endif %}
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="{{ url_for('static', filename='scripts/autocompletion.js') }}"></script>
+<script src="{{ url_for('static', filename='scripts/utils_index.js') }}"></script>
 {% endblock %}
