@@ -35,12 +35,10 @@ def autocomplete():
 #  to page with error message
 @app.route('/programme', methods=['GET'])
 def get_programme():
-    semester = request.args.get('semester')  # get inputs from form
     program_id = request.args.get('program_id')
     program_title = request.args.get('program_title')
-    program_title = "PROGRAM_TITLE_PLACEHOLDER"
     # Empty parameters validation
-    if not semester or not program_id or not program_title:
+    if not program_id or not program_title:
         error = "Le champs ne peut pas etre vide."
         return render_template("index.html", error=error), 400
     list = data_scraper.get_program_courses(program_id)
@@ -50,4 +48,4 @@ def get_programme():
         return render_template("index.html", error=error), 400
     list = json.loads(list)
     return render_template('choix_cours.html', courses=list,
-                           title=program_title, semester=semester), 200
+                           title=program_title), 200
