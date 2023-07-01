@@ -22,7 +22,8 @@ def get_page_cours():
 
 @app.route('/autocomplete')
 def autocomplete():
-    input_text = request.args.get('input_text')
+    input_text = (unicodedata.normalize('NFKD', request.args.get('input_text'))
+                  .encode('ASCII', 'ignore').decode('utf-8')).lower()
     niveau = (unicodedata.normalize('NFKD', request.args.get('niveau')).encode(
         'ASCII', 'ignore').decode('utf-8')).lower()
     if len(input_text) < 3:
@@ -35,7 +36,8 @@ def autocomplete():
             'code': program['code']
         }
         for program in programs_list[niveau]
-        if input_text.lower() in program['title'].lower()
+        if input_text in (unicodedata.normalize('NFKD', program['title'])
+                          .encode('ASCII', 'ignore').decode('utf-8')).lower()
     ][:5]  # Limit the suggestions to 5 items
 
     return jsonify(suggestions)
