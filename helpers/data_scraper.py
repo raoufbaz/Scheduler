@@ -215,6 +215,20 @@ def get_programs():
     programs_table = soup.find('table', {'id': 'tableProgrammes'})
     rows = programs_table.find_all('tr')
 
+    programs_dict = {
+        "baccalaureat": program_bac_list,
+        "certificat": program_cert_list,
+        "concentration": program_conc_list,
+        "dess": program_dess_list,
+        "doctorat": program_doct_list,
+        "maitrise": program_mait_list,
+        "majeure": program_major_list,
+        "mba": program_mba_list,
+        "microprogramme": program_micro_list,
+        "mineure": program_minor_list,
+        "programme court": program_court_list
+    }
+
     for row in rows:
         tag_td = row.find("a")
         if (tag_td):
@@ -231,78 +245,27 @@ def get_programs():
 
         if (tag_td and code_td and types_td):
             program = {'code': code, 'title': title}
+            append_to_list(types, program, programs_dict)
 
-            append_to_list(types, program, program_bac_list, program_cert_list,
-                           program_conc_list, program_dess_list,
-                           program_doct_list, program_mait_list,
-                           program_major_list, program_mba_list,
-                           program_micro_list, program_minor_list,
-                           program_court_list)
     print("--- Saving Programs To CACHE ---")
-    save_programs_to_cache(program_bac_list, program_cert_list,
-                           program_conc_list, program_dess_list,
-                           program_doct_list, program_mait_list,
-                           program_major_list, program_mba_list,
-                           program_micro_list, program_minor_list,
-                           program_court_list)
+    save_programs_to_cache(programs_dict)
     return json.dumps(load_programs_from_cache())
 
 
-def append_to_list(types, program, program_bac_list, program_cert_list,
-                   program_conc_list, program_dess_list, program_doct_list,
-                   program_mait_list, program_major_list, program_mba_list,
-                   program_micro_list, program_minor_list, program_court_list):
-    if types == "baccalaureat":
-        program_bac_list.append(program)
-    elif types == "certificat":
-        program_cert_list.append(program)
-    elif types == "concentration":
-        program_conc_list.append(program)
-    elif types == "dess":
-        program_dess_list.append(program)
-    elif types == "doctorat":
-        program_doct_list.append(program)
-    elif types == "maitrise":
-        program_mait_list.append(program)
-    elif types == "majeure":
-        program_major_list.append(program)
-    elif types == "mba":
-        program_mba_list.append(program)
-    elif types == "microprogramme":
-        program_micro_list.append(program)
-    elif types == "mineure":
-        program_minor_list.append(program)
-    elif types == "programme court":
-        program_court_list.append(program)
+# Appends the ptogram to the corresponding array in the dictionary
+def append_to_list(types, program, programs_dict):
+    if types in programs_dict:
+        programs_dict[types].append(program)
 
 
 # Saves the programs list in a cache file
 # requires the list of programs as parameter
-def save_programs_to_cache(program_bac_list, program_cert_list,
-                           program_conc_list, program_dess_list,
-                           program_doct_list, program_mait_list,
-                           program_major_list, program_mba_list,
-                           program_micro_list, program_minor_list,
-                           program_court_list):
+def save_programs_to_cache(program_lists):
     cache_dir = "cache"
     os.makedirs(cache_dir, exist_ok=True)
 
-    cache_data = {
-        "baccalaureat": program_bac_list,
-        "certificat": program_cert_list,
-        "concentration": program_conc_list,
-        "dess": program_dess_list,
-        "doctorat": program_doct_list,
-        "maitrise": program_mait_list,
-        "majeure": program_major_list,
-        "mba": program_mba_list,
-        "microprogramme": program_micro_list,
-        "mineure": program_minor_list,
-        "programme court": program_court_list
-    }
-
     with open("cache/cache_programs.json", "w") as file:
-        json.dump(cache_data, file, indent=4)
+        json.dump(program_lists, file, indent=4)
 
 
 # Saves the courses list in a cache file
