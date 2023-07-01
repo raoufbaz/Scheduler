@@ -29,11 +29,18 @@
            <form id="search_program" action="/programme" method="get">
            
            <div class="input-group rounded">
-            <select name="niveau" class="form-select rounded" >
-                <option value="cert">Certificat</option>
-                <option value="bac" selected>Baccalaureat</option>
-                <option value="mait">Maitrise</option>
-                <option value="doct">Doctorat</option>
+            <select name="niveau"  id="niveau" class="form-select rounded" >
+                <option value="certificat">Certificat</option>
+                <option value="baccalaureat" selected>Baccalauréat</option>
+                <option value="maitrise">Maîtrise</option>
+                <option value="doctorat">Doctorat</option>
+                <option value="concentration">Concentration</option>
+                <option value="dess">DESS</option>
+                <option value="majeure">Majeure</option>
+                <option value="mba">MBA</option>
+                <option value="microprogramme">Microprogramme</option>
+                <option value="programme court">Programme court</option>
+                <option value="mineure">Mineure</option>
               </select>
          
             <input autocomplete="off" name="program_title" id="program_title" style="width:50%" required type="search" class="form-control rounded"

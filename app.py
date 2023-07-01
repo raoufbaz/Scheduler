@@ -1,5 +1,6 @@
 from flask import Flask, json, render_template, request, jsonify
 from helpers import data_scraper
+import unicodedata
 
 app = Flask(__name__)
 liste_programmes = []
@@ -22,6 +23,8 @@ def get_page_cours():
 @app.route('/autocomplete')
 def autocomplete():
     input_text = request.args.get('input_text')
+    niveau = (unicodedata.normalize('NFKD', request.args.get('niveau')).encode(
+        'ASCII', 'ignore').decode('utf-8')).lower()
     if len(input_text) < 3:
         return jsonify([])
 
@@ -31,8 +34,10 @@ def autocomplete():
             'title': program['title'],
             'code': program['code']
         }
-        for program in programs_list
-        if input_text.lower() in program['title'].lower()][:5]
+        for program in programs_list[niveau]
+        if input_text.lower() in program['title'].lower()
+    ][:5]  # Limit the suggestions to 5 items
+
     return jsonify(suggestions)
 
 
@@ -42,8 +47,7 @@ def autocomplete():
 def get_programme():
     program_id = request.args.get('program_id')
     program_title = request.args.get('program_title')
-    print(program_id)
-    print(program_title)
+
     # Empty parameters validation
     if not program_id or not program_title:
         error = "Le champs ne peut pas etre vide."
