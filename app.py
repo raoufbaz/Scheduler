@@ -1,39 +1,9 @@
 from flask import Flask, json, render_template, request, jsonify
-from helpers import data_scraper, combinations
+from helpers import data_scraper
 import unicodedata
 
 app = Flask(__name__)
 liste_programmes = []
-
-cours1 = data_scraper.scrape_class_info("INF3135", "2023", "3", "7416")
-cours2 = data_scraper.scrape_class_info("INF5151", "2023", "3", "7416")
-cours_list = []
-cours_list.append(cours1)
-cours_list.append(cours2)
-agendas = combinations.generate_agendas(cours_list)
-for agenda in agendas:
-    print("AGENDA : ")
-    print("===========")
-    for course in agenda.courses:
-        print(course.titre)
-        print(course.groupe)
-        print(course.horaires[0]["type"])
-        print("start_time :" + str(course.horaires[0]["heure_debut"]))
-        print("end_time :" + str(course.horaires[0]["heure_fin"]))
-        if len(course.horaires) == 2:
-            print(course.horaires[1]["type"])
-            print("start_time :" + str(course.horaires[1]["heure_debut"]))
-            print("end_time :" + str(course.horaires[1]["heure_fin"]))
-
-@app.route('/agenda')
-def get_combinations():
-    cours1 = data_scraper.scrape_class_info("INF5151", "2023", "3", "7416")
-    # cours2 = data_scraper.scrape_class_info("INF2120", "2023", "3", "7416")
-    # cours3 = data_scraper.scrape_class_info("INF2050", "2023", "3", "7416")
-    print(cours1[0].titre)
-    print(cours1[0].horaires["type"])  
-    # agendas = scheduler.generate_agendas(cours1)
-    return render_template('index.html'), 200
 
 
 @app.route('/')
@@ -43,6 +13,16 @@ def get_page_index():
         liste_programmes = data_scraper.get_programs()
 
     return render_template('index.html'), 200
+
+# @app.route('/agenda')
+# def get_combinations():
+    # cours1 = data_scraper.scrape_class_info("INF5151", "2023", "3", "7416")
+    # cours2 = data_scraper.scrape_class_info("INF2120", "2023", "3", "7416")
+    # cours3 = data_scraper.scrape_class_info("INF2050", "2023", "3", "7416")
+    # print(cours1[0].titre)
+    # print(cours1[0].horaires["type"])
+    # agendas = scheduler.generate_agendas(cours1)
+    # return render_template('index.html'), 200
 
 
 @app.route('/cours')

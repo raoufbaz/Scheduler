@@ -21,7 +21,9 @@ SEMESTER_ID = {
 # Returns a list of groups of the same course
 def scrape_class_info(course_id: str, year: str, semester: str, program):
     try:
-        URL = f"""https://etudier.uqam.ca/wshoraire/cours/{course_id}/{year}{semester}/{program}"""
+        URL = (
+            f"https://etudier.uqam.ca/wshoraire/cours/"
+            f"{course_id}/{year}{semester}/{program}")
         html_doc = requests.get(URL).text
         soup = BeautifulSoup(html_doc, "html.parser")
         groups = soup.find_all("div", {"class": "groupe"})
@@ -113,8 +115,8 @@ def get_horaire(item: any):
             if len(rows) > 0:
                 for row in rows:
                     data = row.select("tr td")
-                    start_time, end_time = extract_time_range(data[2]
-                        .get_text(strip=True).replace('\xa0', ' '))
+                    start_time, end_time = extract_time_range(
+                        data[2].get_text(strip=True).replace('\xa0', ' '))
                     json_obj = {
                         "jour": data[0].get_text(strip=True),
                         "date": data[1].get_text(strip=True),
