@@ -141,20 +141,25 @@ def draw_course_rectangle(day, name, start_time, end_time, color):
     image.save("static/images/schedule_template.png")
 
 
-# generates the schedule of given classes in parameters
-def draw_courses():
-    draw_course_rectangle("lun", "GTI525", "18:00", "20:00", "red")
-    draw_course_rectangle("mer", "GTI525", "18:00", "21:30", "red")
+# draws the courses on the baseline image.
+# Requires 5 params (day, name, start_hour, end_hour, color)
+def draw_courses(courses):
+    for course in courses:
+        day, name, start_hour, end_hour, color = course
+        draw_course_rectangle(day, name, start_hour, end_hour, color)
 
-    draw_course_rectangle("mar", "GTI611", "8:30", "11:30", "green")
-    draw_course_rectangle("ven", "GTI611", "8:30", "12:00", "green")
 
-    draw_course_rectangle("mer", "LOG635", "8:30", "12:00", "blue")
-    draw_course_rectangle("ven", "LOG635", "13:30", "17:00", "blue")
-
-    draw_course_rectangle("lun", "PHY335", "13:30", "17:00", "purple")
-    draw_course_rectangle("jeu", "PHY335", "13:30", "17:00", "purple")
-
+# Example usage:
+courses_data = [
+    ("lun", "GTI525", "18:00", "20:00", "red"),
+    ("mer", "GTI525", "18:00", "21:30", "red"),
+    ("mar", "GTI611", "8:30", "11:30", "green"),
+    ("ven", "GTI611", "8:30", "12:00", "green"),
+    ("mer", "LOG635", "8:30", "12:00", "blue"),
+    ("ven", "LOG635", "13:30", "17:00", "blue"),
+    ("lun", "PHY335", "13:30", "17:00", "purple"),
+    ("jeu", "PHY335", "13:30", "17:00", "purple")
+]
 
 draw_base_template()
-draw_courses()
+draw_courses(courses_data)
