@@ -36,18 +36,18 @@ def is_valid_combination(combination):
     return True
 
 
-# def generate_combinations(courses_list, current_combination=[], index=0):
-#     if index == len(courses_list):
-#         return [tuple(current_combination)]
+def generate_combinations(courses_list, current_combination=[], index=0):
+    if index == len(courses_list):
+        return [tuple(current_combination)]
 
-#     current_courses = courses_list[index]
-#     combinations = []
-#     for course in current_courses:
-#         new_combination = current_combination + [course]
-#         combinations.extend(generate_combinations(courses_list,
-# new_combination, index + 1))
+    current_courses = courses_list[index]
+    combinations = []
+    for course in current_courses:
+        new_combination = current_combination + [course]
+        combinations.extend(
+            generate_combinations(courses_list, new_combination, index + 1))
 
-#     return combinations
+    return combinations
 
 
 def validate_overlapping_hours(horaire1, horaire2):
@@ -62,20 +62,21 @@ def validate_overlapping_hours(horaire1, horaire2):
     return False
 
 
-def generate_combinations(courses_list, current_combination=[], index=0):
-    if index == len(courses_list):
-        return [tuple(current_combination)]
+# def generate_combinations(courses_list, current_combination=[], index=0):
+#     if index == len(courses_list):
+#         return [tuple(current_combination)]
 
-    current_courses = courses_list[index]
-    combinations = []
-    for course in current_courses:
-        new_combination = current_combination + [course]
-        if not any(validate_overlapping_hours(course.horaires, c.horaires) for
-                   c in new_combination[:-1]):
-            combinations.extend(generate_combinations(
-                courses_list, new_combination, index + 1))
+#     current_courses = courses_list[index]
+#     combinations = []
+#     for course in current_courses:
+#         new_combination = current_combination + [course]
+#         if not any(
+# validate_overlapping_hours(course.horaires, c.horaires) for
+#                    c in new_combination[:-1]):
+#             combinations.extend(generate_combinations(
+#                 courses_list, new_combination, index + 1))
 
-    return combinations
+#     return combinations
 
 
 # def get_combinations(courses_list):
