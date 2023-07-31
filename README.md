@@ -38,3 +38,8 @@ git remote add upstream https://github.com/raoufbaz/Scheduler.git
 # Pull
 git pull upstream dev 
 ```
+
+# Vs Code Extensions
+Flake8
+
+

@@ -1,267 +1,208 @@
-
-<!doctype html>
-<html lang="fr">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-
-    <title>Scheduler</title>
-  </head>
-  <body>
-    <style>
-        body{
-            height: 100vh;
-            background-color: rgb(122, 107, 255); /* For browsers that do not support gradients */
-            background-image: linear-gradient(to top right, rgb(78, 111, 255), rgb(185, 101, 255));
-            background-repeat: no-repeat;
-        }
-    </style>
-    <!-- NAVBAR -->
-    <nav class="navbar navbar-light navbar-expand-md bg-light py-3 mb-5">
-        <div class="container"><a class="navbar-brand d-flex align-items-center" href="/"><span class="bs-icon-sm bs-icon-rounded bs-icon-primary d-flex justify-content-center align-items-center me-2 bs-icon"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-bezier">
-                        <path fill-rule="evenodd" d="M0 10.5A1.5 1.5 0 0 1 1.5 9h1A1.5 1.5 0 0 1 4 10.5v1A1.5 1.5 0 0 1 2.5 13h-1A1.5 1.5 0 0 1 0 11.5v-1zm1.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1zm10.5.5A1.5 1.5 0 0 1 13.5 9h1a1.5 1.5 0 0 1 1.5 1.5v1a1.5 1.5 0 0 1-1.5 1.5h-1a1.5 1.5 0 0 1-1.5-1.5v-1zm1.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1zM6 4.5A1.5 1.5 0 0 1 7.5 3h1A1.5 1.5 0 0 1 10 4.5v1A1.5 1.5 0 0 1 8.5 7h-1A1.5 1.5 0 0 1 6 5.5v-1zM7.5 4a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1z"></path>
-                        <path d="M6 4.5H1.866a1 1 0 1 0 0 1h2.668A6.517 6.517 0 0 0 1.814 9H2.5c.123 0 .244.015.358.043a5.517 5.517 0 0 1 3.185-3.185A1.503 1.503 0 0 1 6 5.5v-1zm3.957 1.358A1.5 1.5 0 0 0 10 5.5v-1h4.134a1 1 0 1 1 0 1h-2.668a6.517 6.517 0 0 1 2.72 3.5H13.5c-.123 0-.243.015-.358.043a5.517 5.517 0 0 0-3.185-3.185z"></path>
-                    </svg></span><span>Scheduler</span></a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-5"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
-            <div class="collapse navbar-collapse" id="navcol-5">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link active" href="/">Accueil</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="/cours">Fonctionnalités</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="/">FAQ</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="/">Contactez-nous</a></li>
-
-            </div>
-        </div>
-    </nav>
-
-    
+{% extends "layout.html" %} 
+{% block content %}
 
 <div class="container">
-<div class="row justify-content-center">
-  <div class="col-11 rounded bg-light">
-  <!-- HEADER -->
-    <h2 class="text-center mt-3">7416 - Informatique et genie logiciel</h2>
-    <div class="row mt-5">
-      <h5 class="display-8">Selectionnez vos cours :</h5>
-      <div class="row mt-4">
-        <div class="col">
-          Session : 
-          <div class="btn-group"> 
-            
-                <input type="radio" value="Automne" class="btn-check" name="semester" id="btnradio1" autocomplete="off" checked>
-                 <label class="btn btn-outline-primary" for="btnradio1">A23</label>
-          
-                <input type="radio" value="Hiver" class="btn-check" name="semester" id="btnradio2" autocomplete="off">
-                <label class="btn btn-outline-primary" for="btnradio2">H24</label>
-          
-                <input type="radio" value="Ete" class="btn-check" name="semester" id="btnradio3" autocomplete="off">
-                <label class="btn btn-outline-primary" for="btnradio3">E23</label>
-        </div>
-      </div>
-      <div class="col">
-        Mode : 
-        <div class="btn-group" role="group" aria-label="Checkbox Button Group">
-          <input type="checkbox" id="checkbox1" class="btn-check check" autocomplete="off">
-          <label class="btn btn-outline-primary " for="checkbox1">Virtuel</label>
-        </div>
-        
-        <script>
-          $(document).ready(function() {
-            $('.check').click(function() {
-              var isChecked = $(this).prop('checked');
-              if (isChecked) {
-                $(this).addClass('active');
-              } else {
-                $(this).next('.btn').removeClass('active');
-              }
-            });
-          });
-        </script>
- 
-          </label>
-       
-      </div>
-      <div class="col">
-        
-          
-              <input type="button" value="Automne" class="btn-check" name="semester" id="btnradio1" autocomplete="off" checked>
-               <label class="btn btn-outline-danger" for="btnradio1">Reset</label>
-        
-             
-    </div>
-    </div>
-      </div>
-<!-- LISTE COURS -->
+  <div class="row justify-content-center">
+    <div class="col-11 rounded bg-light">
+    <!-- HEADER -->
+    {% if title %}
+    <h2 class="text-center mt-3">{{ title }}</h2>
+    {% else %}
+    <h2 class="text-center mt-3">TITLE PLACEHOLDER</h2>
+    {% endif %}
       <div class="row mt-5">
-        <form action="">
-          <div class="row justify-content-center">
-          <div class="col-11 border border-secondary rounded">
-            <div class="row mt-3">
-            <!-- START COLS -->
-              <div class="col mt-2">
-                <div class="btn-group"> 
-                <input type="checkbox" id="checkbox1" class="btn-check check shadow-lg" autocomplete="off">
-                <label style="width: 120px;" class="btn bg-light border border-secondary" for="checkbox1">INFFF1070
-                  <img src="computer.png" width="15" height="15" alt="">
-                </label>
-                <button type="button" class="btn btn-outline-secondary">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
-                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
-                  </svg>
-                </button>
-              </div>
-              </div>
-             
-              <!-- END COLS -->
-            </div>
+        <h5 class="display-8">Selectionnez vos cours :</h5>
+        <div class="row mt-4">
+          <div class="col">
+            Session : 
+            <div class="btn-group"> 
+              
+                  <input type="radio" value="Automne" class="btn-check" name="semester" id="btnradio1" autocomplete="off" checked>
+                   <label class="btn btn-outline-primary" for="btnradio1">A23</label>
             
-
-            </div>
+                  <input type="radio" value="Hiver" class="btn-check" name="semester" id="btnradio2" autocomplete="off">
+                  <label class="btn btn-outline-primary" for="btnradio2">H24</label>
+            
+                  <input type="radio" value="Ete" class="btn-check" name="semester" id="btnradio3" autocomplete="off">
+                  <label class="btn btn-outline-primary" for="btnradio3">E23</label>
           </div>
         </div>
-        </form>
+        <div class="col">
+          Mode : 
+          <div class="btn-group" role="group" aria-label="Checkbox Button Group">
+            <input type="checkbox" id="checkbox1" class="btn-check check" autocomplete="off">
+            <label class="btn btn-outline-primary " for="checkbox1">Virtuel
+              <img src="{{ url_for('static', filename='images/computer.png') }}" width="15" height="15" alt="">
+            </label>
+          </div>
+          
+          <script>
+            $(document).ready(function() {
+              $('.check').click(function() {
+                var isChecked = $(this).prop('checked');
+                if (isChecked) {
+                  $(this).addClass('active');
+                } else {
+                  $(this).next('.btn').removeClass('active');
+                }
+              });
+            });
+
+            $(document).ready(function() {
+              $('.checkk').click(function() {
+                var isChecked = $(this).prop('checked');
+                if (isChecked) {
+                  $(this).addClass('active');
+                  $(this).removeClass('bg-light');
+                  $(this).addClass('bg-secondary');
+                } else {
+                  $(this).removeClass('active');
+                  $(this).removeClass('bg-secondary');
+                  $(this).addClass('bg-light');
+                }
+              });
+            });
+          </script>
+   
+            </label>
+         
+        </div>
+        <div class="col">
+          
+            
+                <input type="button" value="Automne" class="btn-check" name="semester" id="btnradio1" autocomplete="off" checked>
+                 <label class="btn btn-outline-danger" for="btnradio1">Reset</label>
+          
+               
       </div>
-      <!-- END LISTE COURS -->
+      </div>
+        </div>
+  <!-- LISTE COURS -->
+{% if courses %}
+<div class="row mt-3 pb-3">
+  <form action="/agendas" method="post">
+    <div class="row justify-content-center">
+    <div class="col-11 border border-secondary rounded">
+      <div class="row mt-3 mb-3">
+      <!-- START COLS -->
+      {% for cours in courses %}
+        <div class="col mt-2">
+          <div class="btn-group"> 
+          <input type="checkbox" id="{{cours.id}}" class="btn-check checkk shadow-lg" name="">
+          <label style="width: 120px;" class="btn bg-light border border-secondary" for="{{cours.id}}">{{cours.id}}
+            <img src="{{ url_for('static', filename='images/computer.png') }}" width="15" height="15" alt="">
+          </label>
+          <button type="button" class="btn btn-outline-success">
+            <!-- <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+              <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+            </svg> -->
+            +
+          </button>
+        </div>
+        </div>
+        {% endfor %}
+        <!-- END COLS -->
+      </div>
+      </div>
+    </div>
+     <!-- COURS HORS PROGRAMME -->
+     <div class="row mt-3">
+     <h5 class="display-8">Ajouter un cours hors programme :</h5>
+      <div class="col-4 mt-3">
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" placeholder="ex : INF1070" aria-label="Recipient's username" aria-describedby="button-addon2">
+          <button class="btn btn-outline-primary" type="button" id="button-addon2">Button</button>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-3 mb-3">
+      <!-- START COLS -->
+      <div class="col-6">
+        <div class="row">
+          <div class="col ml-5 mt-2">
+            <div class="btn-group"> 
+              <button type="button" class="btn btn-outline-danger">
+                <!-- <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                  <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                </svg> -->
+                -
+              </button>
+            <input type="checkbox" id="test" class="btn-check checkk shadow-lg" name="">
+            <label style="width: 120px;" class="btn bg-light border border-secondary" for="test">INF1132
+              <img src="{{ url_for('static', filename='images/computer.png') }}" width="15" height="15" alt="">
+            </label>
+          </div>
+          </div>
+          <div class="col mt-2">
+            <div class="btn-group"> 
+              <button type="button" class="btn btn-outline-danger">
+                <!-- <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                  <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                </svg> -->
+                -
+              </button>
+            <input type="checkbox" id="test" class="btn-check checkk shadow-lg" name="">
+            <label style="width: 120px;" class="btn bg-light border border-secondary" for="test">INF1132
+              <img src="{{ url_for('static', filename='images/computer.png') }}" width="15" height="15" alt="">
+            </label>
+          </div>
+          </div>
+          <div class="col mt-2">
+            <div class="btn-group"> 
+              <button type="button" class="btn btn-outline-danger">
+                <!-- <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                  <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                </svg> -->
+                -
+              </button>
+            <input type="checkbox" id="test" class="btn-check checkk shadow-lg" name="">
+            <label style="width: 120px;" class="btn bg-light border border-secondary" for="test">INF1132
+              <img src="{{ url_for('static', filename='images/computer.png') }}" width="15" height="15" alt="">
+            </label>
+          </div>
+          </div>
+          <div class="col mt-2">
+            <div class="btn-group"> 
+              <button type="button" class="btn btn-outline-danger">
+                <!-- <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                  <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                </svg> -->
+                -
+              </button>
+            <input type="checkbox" id="test" class="btn-check checkk shadow-lg" name="">
+            <label style="width: 120px;" class="btn bg-light border border-secondary" for="test">INF1132
+              <img src="{{ url_for('static', filename='images/computer.png') }}" width="15" height="15" alt="">
+            </label>
+          </div>
+        </div>
+        
+        </div>
+      </div>
+        <!-- END COLS -->
+      </div>
+    <!-- FILTRES -->
+    <div class="row mt-3">
+      <h5 class="display-8">Filtres :</h5>
+    <p>à venir</p>
     </div>
 
-  </div>
+    <div class="row justify-content-end mt-3">
+      <div class="col-2">
+        <button type="submit" class="btn btn-primary">Soumettre</button>
+      </div>
+    </div>
+  </form>
+</div>
+{% endif %}
+<!-- END LISTE COURS -->
 </div>
 
- </div>
-
-
-<section>
-  <!-- <style>
-    .btn {
-      --bs-btn-padding-x: 0;
-      --bs-btn-padding-y: 0;}
-  </style>
-  <div class="container">
-  <div class="row justify-content-center mt-5">
-    <div class="col-8">
-      <div class="row  row-cols-auto">
-        <div class="col">
-          <div  class="card text-center btn btn-outline-secondary mt-2">
-            <div class="card-body">INF1070</div>
-          </div>
-        </div>
-        <div class="col">
-          <div class="card text-center mt-2">
-            <div class="card-body">INF1070</div>
-          </div>
-        </div>
-        <div class="col">
-          <div class="card text-center mt-2">
-            <div class="card-body">INF1070</div>
-          </div>
-        </div>
-        <div class="col">
-          <div class="card text-center mt-2">
-            <div class="card-body">INF1070</div>
-          </div>
-        </div>
-        <div class="col">
-          <div class="card text-center mt-2">
-            <div class="card-body">INF1070</div>
-          </div>
-        </div>
-        <div class="col">
-          <div class="card text-center mt-2">
-            <div class="card-body">INF1070</div>
-          </div>
-        </div>
-        <div class="col">
-          <div class="card text-center mt-2">
-            <div class="card-body">INF1070</div>
-          </div>
-        </div>
-        <div class="col">
-          <div class="card text-center mt-2">
-            <div class="card-body">INF1070</div>
-          </div>
-        </div>
-      </div>
-      
-    </div>
-  </div>
-</div> -->
-</section>
-
-
-
-    <!-- Bootstrap Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-  </body>
-</html>
-
-<!-- {% extends "layout.html" %} {% block content %}
-
-<div class="container">
-<div class="row justify-content-center">
-  <div class="col-8 ">Column</div>
+</div>
 </div>
 
- </div>
 
 
-<section> -->
-  <!-- <style>
-    .btn {
-      --bs-btn-padding-x: 0;
-      --bs-btn-padding-y: 0;}
-  </style>
-  <div class="container">
-  <div class="row justify-content-center mt-5">
-    <div class="col-8">
-      <div class="row  row-cols-auto">
-        <div class="col">
-          <div  class="card text-center btn btn-outline-secondary mt-2">
-            <div class="card-body">INF1070</div>
-          </div>
-        </div>
-        <div class="col">
-          <div class="card text-center mt-2">
-            <div class="card-body">INF1070</div>
-          </div>
-        </div>
-        <div class="col">
-          <div class="card text-center mt-2">
-            <div class="card-body">INF1070</div>
-          </div>
-        </div>
-        <div class="col">
-          <div class="card text-center mt-2">
-            <div class="card-body">INF1070</div>
-          </div>
-        </div>
-        <div class="col">
-          <div class="card text-center mt-2">
-            <div class="card-body">INF1070</div>
-          </div>
-        </div>
-        <div class="col">
-          <div class="card text-center mt-2">
-            <div class="card-body">INF1070</div>
-          </div>
-        </div>
-        <div class="col">
-          <div class="card text-center mt-2">
-            <div class="card-body">INF1070</div>
-          </div>
-        </div>
-        <div class="col">
-          <div class="card text-center mt-2">
-            <div class="card-body">INF1070</div>
-          </div>
-        </div>
-      </div>
-      
-    </div>
-  </div>
-</div> -->
-<!-- </section>
 
-{% endblock %} -->
+
+
+{% endblock %}

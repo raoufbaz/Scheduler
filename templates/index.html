@@ -29,7 +29,7 @@
            <form id="search_program" action="/programme" method="get">
            
            <div class="input-group rounded">
-            <select name="niveau"  id="niveau" class="form-select rounded" >
+            <select name="niveau"  id="niveau" class="form-select" >
                 <option value="certificat">Certificat</option>
                 <option value="baccalaureat" selected>Baccalauréat</option>
                 <option value="maitrise">Maîtrise</option>
@@ -43,7 +43,7 @@
                 <option value="mineure">Mineure</option>
               </select>
          
-            <input autocomplete="off" name="program_title" id="program_title" style="width:50%" required type="search" class="form-control rounded"
+            <input autocomplete="off" name="program_title" id="program_title" style="width:50%" required type="search" class="form-control"
                    placeholder="Titre du programme"
                    aria-label="Search"
                    aria-describedby="search-addon"/>
@@ -51,16 +51,15 @@
                     Recherche
                   </button>   
                   <input type="hidden" name="program_id" id="program_id" value="">   
-                 
+                </div>
                 </form>
+                <div class="row justify-content-center align-items-center g-2">
+                    <div class="col-7 pl-2">
+                    <div id="dropdown-menu" class="dropdown-menu"></div>    
+                    </div>
+                  </div>
         </div>
-        <div class="row justify-content-center align-items-center g-2">
-            <div class="col-8 pl-2">
-            <div id="dropdown-menu" class="dropdown-menu">
-                     </div>    
-            
-            </div>
-          </div>
+
         </div>
     </div>
 </Section>

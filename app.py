@@ -14,6 +14,16 @@ def get_page_index():
 
     return render_template('index.html'), 200
 
+# @app.route('/agenda')
+# def get_combinations():
+    # cours1 = data_scraper.scrape_class_info("INF5151", "2023", "3", "7416")
+    # cours2 = data_scraper.scrape_class_info("INF2120", "2023", "3", "7416")
+    # cours3 = data_scraper.scrape_class_info("INF2050", "2023", "3", "7416")
+    # print(cours1[0].titre)
+    # print(cours1[0].horaires["type"])
+    # agendas = scheduler.generate_agendas(cours1)
+    # return render_template('index.html'), 200
+
 
 @app.route('/cours')
 def get_page_cours():

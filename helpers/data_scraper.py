@@ -4,7 +4,7 @@ import requests
 import json
 import os
 import unicodedata
-
+from models.course import Course
 SEMESTER_ID = {
     "not_found": "0",
     "winter": "1",
@@ -18,27 +18,32 @@ SEMESTER_ID = {
 
 # Scrapes all available info on a class
 # Parameters are needed to build the URL
-# Returns JSON Object with result or empty
-def scrape_class_info(course: str, current_year: str, semester: str, program):
+# Returns a list of groups of the same course
+def scrape_class_info(course_id: str, year: str, semester: str, program):
     try:
-        URL = f"""https://etudier.uqam.ca/wshoraire/cours/{course}/
-        {current_year}{semester}/{program}"""
+        URL = (
+            f"https://etudier.uqam.ca/wshoraire/cours/"
+            f"{course_id}/{year}{semester}/{program}")
         html_doc = requests.get(URL).text
         soup = BeautifulSoup(html_doc, "html.parser")
         groups = soup.find_all("div", {"class": "groupe"})
-        infos_cours = []
+        liste_cours = []
         for item in groups:
-            json_obj = {
-                "groupe": get_group(item),
-                "nb_places": get_places(item),
-                "enseignants": get_professors(item),
-                "remarques": get_remarques(item),
-                "modalite": get_modalite(item),
-                "horaires": get_horaire(item)
-                        }
-            infos_cours.append(json_obj)
-        return json.dumps(infos_cours)
-    except AttributeError:
+            cours = Course()
+            cours.titre = course_id
+            cours.semestre = year + semester
+            cours.programme_id = program
+            cours.groupe = get_group(item)
+            cours.nb_places = get_places(item)
+            cours.enseignants = get_professors(item)
+            cours.remarques = get_remarques(item)
+            cours.modalite = get_modalite(item)
+            cours.horaires = get_horaire(item)
+
+            liste_cours.append(cours)
+        return liste_cours
+    except Exception as e:
+        print("Exception in scraping course : " + str(e))
         return []
 
 
@@ -110,16 +115,28 @@ def get_horaire(item: any):
             if len(rows) > 0:
                 for row in rows:
                     data = row.select("tr td")
+                    start_time, end_time = extract_time_range(
+                        data[2].get_text(strip=True).replace('\xa0', ' '))
                     json_obj = {
                         "jour": data[0].get_text(strip=True),
                         "date": data[1].get_text(strip=True),
                         "heure": data[2].get_text(strip=True)
                         .replace('\xa0', ' '),
                         "lieu": data[3].get_text(strip=True),
-                        "type": data[4].get_text(strip=True)
+                        "type": data[4].get_text(strip=True),
+                        "heure_debut": start_time,
+                        "heure_fin": end_time
                         }
                     horaires.append(json_obj)
                 return horaires
+
+
+def extract_time_range(time_str):
+    time_str = time_str.lower().replace('de ', '').replace('h', '')
+    start_time, end_time = time_str.split(' à ')
+    start_time = int(start_time)
+    end_time = int(end_time)
+    return start_time, end_time
 
 
 def get_all_courses_data(program_id: str):
@@ -305,6 +322,5 @@ def load_courses_from_cache(program_id):
     return None
 
 
-# print(get_program_courses("7416"))
 # get_program_courses("7416") # decomment to save a cache file of the course
 # get_programs() # decomment to save a cache file of list of programs
