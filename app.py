@@ -1,11 +1,12 @@
 from flask import Flask, json, render_template, request, jsonify
-from helpers import data_scraper
+from helpers import combinations_generator, data_scraper
 import unicodedata
 
 app = Flask(__name__)
 liste_programmes = []
 
 
+# Landing page
 @app.route('/')
 def get_page_index():
     global liste_programmes
@@ -14,22 +15,8 @@ def get_page_index():
 
     return render_template('index.html'), 200
 
-# @app.route('/agenda')
-# def get_combinations():
-    # cours1 = data_scraper.scrape_class_info("INF5151", "2023", "3", "7416")
-    # cours2 = data_scraper.scrape_class_info("INF2120", "2023", "3", "7416")
-    # cours3 = data_scraper.scrape_class_info("INF2050", "2023", "3", "7416")
-    # print(cours1[0].titre)
-    # print(cours1[0].horaires["type"])
-    # agendas = scheduler.generate_agendas(cours1)
-    # return render_template('index.html'), 200
 
-
-@app.route('/cours')
-def get_page_cours():
-    return render_template('choix_cours_template.html'), 200
-
-
+# Autocompletion for landing page's search bar
 @app.route('/autocomplete')
 def autocomplete():
     input_text = (unicodedata.normalize('NFKD', request.args.get('input_text'))
@@ -53,8 +40,8 @@ def autocomplete():
     return jsonify(suggestions)
 
 
-#  Search by program ID, redirects to list of courses, else back
-#  to page with error message
+# Search by program ID, redirects to list of courses, else back
+# to page with error message
 @app.route('/programme', methods=['GET'])
 def get_programme():
     program_id = request.args.get('program_id')
@@ -72,3 +59,15 @@ def get_programme():
     list = json.loads(list)
     return render_template('choix_cours.html', courses=list,
                            title=program_title), 200
+
+
+# makes combinations and redirect to Schedules page
+@app.route('/agenda', methods=['POST', 'GET'])
+def get_combinations():
+    cours1 = data_scraper.scrape_class_info("INF5151", "2023", "3", "7416")
+    # cours2 = data_scraper.scrape_class_info("INF2120", "2023", "3", "7416")
+    # cours3 = data_scraper.scrape_class_info("INF2050", "2023", "3", "7416")
+    # print(cours1[0].titre)
+    # print(cours1[0].horaires["type"])
+    agendas = combinations_generator.generate_agendas(cours1)
+    return render_template('index.html', agendas=agendas), 200
