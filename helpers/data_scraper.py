@@ -16,6 +16,15 @@ SEMESTER_ID = {
 # f"https://etudier.uqam.ca/wshoraire/cours/INF1120/20233/7316"
 
 
+def scrape_courses_from_list(courses: list, semester: str, year: str):
+    result = []
+    for course in courses:
+        groups = scrape_class_info(course['course_id'], year,
+                                   SEMESTER_ID[semester], course['program_id'])
+        result.append(groups)
+    return result
+
+
 # Scrapes all available info on a class
 # Parameters are needed to build the URL
 # Returns a list of groups of the same course
@@ -24,6 +33,7 @@ def scrape_class_info(course_id: str, year: str, semester: str, program):
         URL = (
             f"https://etudier.uqam.ca/wshoraire/cours/"
             f"{course_id}/{year}{semester}/{program}")
+        print(URL)
         html_doc = requests.get(URL).text
         soup = BeautifulSoup(html_doc, "html.parser")
         groups = soup.find_all("div", {"class": "groupe"})
@@ -137,13 +147,6 @@ def extract_time_range(time_str):
     start_time = int(start_time)
     end_time = int(end_time)
     return start_time, end_time
-
-
-def get_all_courses_data(program_id: str):
-    # call to other functions
-    return 0
-
-# print(scrape_class_info("INF5190","2023",SEMESTER_ID["fall"],"7316"))
 
 
 # Scrapes course title and program id
