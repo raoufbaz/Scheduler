@@ -1,5 +1,5 @@
 from flask import Flask, json, render_template, request, jsonify
-from helpers import combinations_generator, data_scraper
+from helpers import data_scraper
 import unicodedata
 
 app = Flask(__name__)
@@ -62,12 +62,15 @@ def get_programme():
 
 
 # makes combinations and redirect to Schedules page
-@app.route('/agenda', methods=['POST', 'GET'])
+@app.route('/agendas', methods=['POST', 'GET'])
 def get_combinations():
-    cours1 = data_scraper.scrape_class_info("INF5151", "2023", "3", "7416")
+    courses = request.args.get('courses')
+    print(courses)  # contains ["INF1070","INF1120"] json
+    return jsonify("reussi ")
+    # cours1 = data_scraper.scrape_class_info("INF5151", "2023", "3", "7416")
     # cours2 = data_scraper.scrape_class_info("INF2120", "2023", "3", "7416")
     # cours3 = data_scraper.scrape_class_info("INF2050", "2023", "3", "7416")
     # print(cours1[0].titre)
     # print(cours1[0].horaires["type"])
-    agendas = combinations_generator.generate_agendas(cours1)
-    return render_template('index.html', agendas=agendas), 200
+    # agendas = combinations_generator.generate_agendas(cours1)
+    # return render_template('index.html', agendas=agendas), 200

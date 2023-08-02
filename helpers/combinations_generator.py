@@ -1,4 +1,3 @@
-# import itertools
 # from models.agenda import Agenda
 
 # This function takes a list of courses(each can have multiple groups)
