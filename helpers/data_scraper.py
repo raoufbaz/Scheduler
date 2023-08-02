@@ -1,21 +1,23 @@
 from bs4 import BeautifulSoup
-# from datetime import date, datetime
 import requests
 import json
 import os
 import unicodedata
 from models.course import Course
+
+# URL_LINK_EXAMPLE =
+# f"https://etudier.uqam.ca/wshoraire/cours/INF1120/20233/7316"
+
 SEMESTER_ID = {
     "not_found": "0",
     "winter": "1",
     "summer": "2",
     "fall": "3",
 }
-# DATE_TIME_FORMAT = "%m-%d-%Y"
-# URL_LINK_EXAMPLE =
-# f"https://etudier.uqam.ca/wshoraire/cours/INF1120/20233/7316"
 
 
+# Scrapes courses from a given list of [{course_id, program_id}]
+# Returns a list of data for all given courses
 def scrape_courses_from_list(courses: list, semester: str, year: str):
     result = []
     for course in courses:
