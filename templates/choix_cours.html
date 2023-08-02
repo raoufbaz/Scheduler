@@ -36,33 +36,7 @@
             </label>
           </div>
           
-          <script>
-            $(document).ready(function() {
-              $('.check').click(function() {
-                var isChecked = $(this).prop('checked');
-                if (isChecked) {
-                  $(this).addClass('active');
-                } else {
-                  $(this).next('.btn').removeClass('active');
-                }
-              });
-            });
 
-            $(document).ready(function() {
-              $('.checkk').click(function() {
-                var isChecked = $(this).prop('checked');
-                if (isChecked) {
-                  $(this).addClass('active');
-                  $(this).removeClass('bg-light');
-                  $(this).addClass('bg-secondary');
-                } else {
-                  $(this).removeClass('active');
-                  $(this).removeClass('bg-secondary');
-                  $(this).addClass('bg-light');
-                }
-              });
-            });
-          </script>
    
             </label>
          
@@ -80,32 +54,30 @@
   <!-- LISTE COURS -->
 {% if courses %}
 <div class="row mt-3 pb-3">
-  <form action="/agendas" method="post">
+  <form id="agendas">
     <div class="row justify-content-center">
     <div class="col-11 border border-secondary rounded">
       <div class="row mt-3 mb-3">
       <!-- START COLS -->
-      <div class="col mt-2">
-        <div class="btn-group"> 
-        <input type="checkbox" id="placeholder" class="btn-check shadow-lg" name="">
+      <!-- <div class="col mt-2">
+        <div class="btn-group cours"> 
+        <input type="checkbox" id="placeholder" class="btn-check" name="">
         <label style="width: 120px;background-color: rgb(122, 107, 255);" class="btn border text-light border-secondary" for="PLACEHOLDER">SELECTED
         </label>
         <button type="button" class="btn btn-outline-success">
-          <!-- <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
-            <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
-          </svg> -->
+         
           +
         </button>
       </div>
-      </div>
+      </div> -->
       {% for cours in courses %}
         <div class="col mt-2">
           <div class="btn-group"> 
-          <input type="checkbox" id="{{cours.id}}" class="btn-check checkk shadow-lg" name="">
+          <input type="checkbox" id="{{cours.id}}" class="btn-check cours" name="">
           <label style="width: 120px;" class="btn bg-light border border-secondary" for="{{cours.id}}">{{cours.id}}
-            <img src="{{ url_for('static', filename='images/computer.png') }}" width="15" height="15" alt="">
+            <!-- <img src="{{ url_for('static', filename='images/computer.png') }}" width="15" height="15" alt=""> -->
           </label>
-          <button type="button" class="btn btn-outline-success">
+          <button type="button" class="btn btn-outline-success btn-add">
             <!-- <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
               <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
             </svg> -->
@@ -209,13 +181,7 @@
 {% endif %}
 <!-- END LISTE COURS -->
 </div>
-
 </div>
 </div>
-
-
-
-
-
-
+  <script src="{{ url_for('static', filename='scripts/utils_cours.js') }}"></script> 
 {% endblock %}
