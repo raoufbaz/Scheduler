@@ -14,12 +14,10 @@ $(document).ready(function() {
     label.css('background-color','#7A6BFF');
     label.css('color', '#f8f9fa');
     
-   
-    console.log(label.text());
   });
 });
 
-// onClick remove button, change label's color
+// onClick remove button, revert changes
 $(document).ready(function() {
     $(document).on('click', '.btn-remove', function() {
       var button = $(this);
@@ -39,7 +37,8 @@ $(document).ready(function() {
     });
   });
 
-// ajax submission
+
+// ajax main form submission
 $(document).ready(function () {
     $("#agendas").submit(function (event) {
       
@@ -47,21 +46,32 @@ $(document).ready(function () {
       var raw_list = $(".actif");
       var courses = [];
       raw_list.each(function( index ) {
-      courses.push($( this ).attr('id'));
+        var courseObj = {
+          course_id: $( this ).attr('id'),
+          program_id: $( this ).attr('name')
+      }
+      courses.push(courseObj);
       });
 
+      //get semester id
+      var semester = $("input[name='semester']").val();
+      
+      //serialize data
       let formData = {
-        courses: JSON.stringify(courses)
+        courses: JSON.stringify(courses),
+        semester: JSON.stringify(semester),
     };
         $.ajax({
             type: "GET",
             url: "/agendas",
             data: formData,
             success: function (response) {
-              alert("success" + response);
+              alert("success! check browser console for object");
+              console.log(response);
             },
             error: function (xhr) {
-                alert("error : " + xhr);
+              if(xhr.status == 400)
+                alert(xhr.responseJSON);
             }
         });
         event.preventDefault();

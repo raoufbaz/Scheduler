@@ -1,5 +1,5 @@
 from flask import Flask, json, render_template, request, jsonify
-from helpers import data_scraper
+from helpers import data_scraper, combinations_generator
 import unicodedata
 
 app = Flask(__name__)
@@ -58,19 +58,31 @@ def get_programme():
         return render_template("index.html", error=error), 400
     list = json.loads(list)
     return render_template('choix_cours.html', courses=list,
-                           title=program_title), 200
+                           title=program_title,
+                           program_id=program_id), 200
 
 
 # makes combinations and redirect to Schedules page
 @app.route('/agendas', methods=['POST', 'GET'])
 def get_combinations():
-    courses = request.args.get('courses')
-    print(courses)  # contains ["INF1070","INF1120"] json
-    return jsonify("reussi ")
-    # cours1 = data_scraper.scrape_class_info("INF5151", "2023", "3", "7416")
-    # cours2 = data_scraper.scrape_class_info("INF2120", "2023", "3", "7416")
-    # cours3 = data_scraper.scrape_class_info("INF2050", "2023", "3", "7416")
-    # print(cours1[0].titre)
-    # print(cours1[0].horaires["type"])
-    # agendas = combinations_generator.generate_agendas(cours1)
-    # return render_template('index.html', agendas=agendas), 200
+    courses = json.loads(request.args.get('courses'))
+    semester_raw = json.loads(request.args.get('semester'))
+
+    # convert semester to variables
+    season_map = {
+        'A': 'fall',
+        'E': 'summer',
+        'H': 'winter'
+    }
+    semester = season_map[semester_raw[0]]
+    year = "20" + semester_raw[1:]
+
+    # scrape courses data and generate combinations
+    courses = data_scraper.scrape_courses_from_list(courses, semester, year)
+    combinations = combinations_generator.generate_combinations(courses)
+    jsonlist = []
+    for comb in combinations:
+        jsonlist.append(comb.agenda)
+    if len(jsonlist) == 0:
+        return jsonify("no combination possible"), 400
+    return jsonify(jsonlist)

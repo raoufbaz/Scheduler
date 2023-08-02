@@ -17,13 +17,13 @@
             Session : 
             <div class="btn-group"> 
               
-                  <input type="radio" value="Automne" class="btn-check" name="semester" id="btnradio1" autocomplete="off" checked>
+                  <input type="radio" value="A23" class="btn-check" name="semester" id="btnradio1" autocomplete="off" checked>
                    <label class="btn btn-outline-primary" for="btnradio1">A23</label>
             
-                  <input type="radio" value="Hiver" class="btn-check" name="semester" id="btnradio2" autocomplete="off">
+                  <input type="radio" value="H24" class="btn-check" name="semester" id="btnradio2" autocomplete="off">
                   <label class="btn btn-outline-primary" for="btnradio2">H24</label>
             
-                  <input type="radio" value="Ete" class="btn-check" name="semester" id="btnradio3" autocomplete="off">
+                  <input type="radio" value="E23" class="btn-check" name="semester" id="btnradio3" autocomplete="off">
                   <label class="btn btn-outline-primary" for="btnradio3">E23</label>
           </div>
         </div>
@@ -73,7 +73,7 @@
       {% for cours in courses %}
         <div class="col mt-2">
           <div class="btn-group"> 
-          <input type="checkbox" id="{{cours.id}}" class="btn-check cours" name="">
+          <input type="checkbox" id="{{cours.id}}" class="btn-check cours" name="{{program_id}}">
           <label style="width: 120px;" class="btn bg-light border border-secondary" for="{{cours.id}}">{{cours.id}}
             <!-- <img src="{{ url_for('static', filename='images/computer.png') }}" width="15" height="15" alt=""> -->
           </label>

@@ -1,4 +1,5 @@
-# from models.agenda import Agenda
+from models.agenda import Agenda
+
 
 # This function takes a list of courses(each can have multiple groups)
 # Generates combinations depending on groups and overlapping hours.
@@ -23,7 +24,12 @@ def generate_combinations(courses: list):
         combinations = [lst for lst in combinations if (
             len(lst) == len(courses)
         )]
-        return combinations
+        # convert lists to Agenda objects
+        result = []
+        for combinaison in combinations:
+            agenda = Agenda(combinaison)
+            result.append(agenda)
+        return result
 
 
 # Checks if a combination is valid before appending it
