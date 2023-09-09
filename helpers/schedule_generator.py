@@ -1,4 +1,6 @@
 from PIL import Image, ImageDraw, ImageFont
+import base64
+import io
 
 # Set the dimensions of the main rectangle
 main_width = 875
@@ -46,7 +48,8 @@ colors = {
         "green": {"fill": (96, 204, 109), "shadow": (37, 162, 87)},
         "blue": {"fill": (3, 140, 252), "shadow": (2, 91, 181)},
         "purple": {"fill": (98, 3, 252), "shadow": (51, 1, 131)},
-        "yellow": {"fill": (239, 252, 3), "shadow": (63, 97, 26)},
+        "yellow": {"fill": (204, 145, 25), "shadow": (127, 90, 16)},
+        "pink": {"fill": (161, 54, 169), "shadow": (100, 33, 104)},
         }
 
 
@@ -138,7 +141,7 @@ def draw_course_rectangle(day, name, start_time, end_time, color):
     text_font = ImageFont.truetype("arial.ttf", 12)
     draw.text(text_position, name, fill="white", font=text_font)
 
-    image.save("static/images/schedule_template.png")
+    # image.save("static/images/schedule_template.png")
 
 
 # draws the courses on the baseline image.
@@ -149,16 +152,47 @@ def draw_courses(courses):
         draw_course_rectangle(day, name, start_hour, end_hour, color)
 
 
+# Generate the schedule image and return it as base64 encoded PNG
+def generate_for_frontend(courses_data):
+    # Your drawing code here
+    draw_courses(courses_data)
+
+    img_byte_array = io.BytesIO()
+    image.save(img_byte_array, format="PNG")
+    img_byte_array.seek(0)
+    base64_image = base64.b64encode(img_byte_array.read()).decode()
+    return base64_image
+
+
 # Example usage:
 courses_data = [
-    ("lun", "GTI525", "18:00", "20:00", "red"),
-    ("mer", "GTI525", "18:00", "21:30", "red"),
-    ("mar", "GTI611", "8:30", "11:30", "green"),
-    ("ven", "GTI611", "8:30", "12:00", "green"),
-    ("mer", "LOG635", "8:30", "12:00", "blue"),
-    ("ven", "LOG635", "13:30", "17:00", "blue"),
-    ("lun", "PHY335", "13:30", "17:00", "purple"),
-    ("jeu", "PHY335", "13:30", "17:00", "purple")
+    # classes
+    ("lun", "GTI525 (C)", "18:00", "21:30", "red"),
+    ("mer", "GTI525 (TP)", "18:00", "20:00", "red"),
+
+    ("mar", "GTI611 (TP)", "8:30", "11:30", "purple"),
+    ("ven", "GTI611 (C)", "8:30", "12:00", "purple"),
+
+    ("mer", "LOG635 (TP)", "8:30", "10:30", "blue"),
+    ("mer", "LOG635 (TP)", "10:30", "12:30", "blue"),
+    ("ven", "LOG635 (C)", "13:30", "17:00", "blue"),
+
+    # Work
+    ("lun", "Desjardins", "8:00", "12:00", "green"),
+    ("lun", "Desjardins", "13:00", "17:00", "green"),
+    ("jeu", "Desjardins", "8:00", "12:00", "green"),
+    ("jeu", "Desjardins", "13:00", "17:00", "green"),
+    ("mer", "Desjardins", "13:00", "17:00", "green"),
+
+    # gym
+    ("mar", "Gym", "18:00", "20:00", "yellow"),
+    ("jeu", "Gym", "18:00", "20:00", "yellow"),
+    ("sam", "Gym", "10:00", "12:00", "yellow"),
+
+    # Self improvement
+    ("dim", "Self Improvement", "9:00", "12:00", "pink"),
+    ("mar", "Study", "13:00", "17:00", "pink"),
+    ("dim", "Study", "13:00", "17:00", "pink")
 ]
 
 draw_base_template()
