@@ -33,7 +33,6 @@ $(document).ready(function() {
       label.css('background-color','');
       label.css('color','#000');
       
-      console.log(label.text());
     });
   });
 

@@ -15,17 +15,18 @@
         <div class="row mt-4">
           <div class="col">
             Session : 
-            <div class="btn-group"> 
-              
-                  <input type="radio" value="A23" class="btn-check" name="semester" id="btnradio1" autocomplete="off" checked>
-                   <label class="btn btn-outline-primary" for="btnradio1">A23</label>
+            <div class="btn-group">
+              {% if semesters %}
+                  <input type="radio" value="{{semesters[0]}}" class="btn-check" name="semester" id="btnradio1" autocomplete="off" checked>
+                   <label class="btn btn-outline-primary" for="btnradio1">{{semesters[0]}}</label>
             
-                  <input type="radio" value="H24" class="btn-check" name="semester" id="btnradio2" autocomplete="off">
-                  <label class="btn btn-outline-primary" for="btnradio2">H24</label>
+                  <input type="radio" value="{{semesters[1]}}" class="btn-check" name="semester" id="btnradio2" autocomplete="off">
+                  <label class="btn btn-outline-primary" for="btnradio2">{{semesters[1]}}</label>
             
-                  <input type="radio" value="E23" class="btn-check" name="semester" id="btnradio3" autocomplete="off">
-                  <label class="btn btn-outline-primary" for="btnradio3">E23</label>
-          </div>
+                  <input type="radio" value="{{semesters[2]}}" class="btn-check" name="semester" id="btnradio3" autocomplete="off">
+                  <label class="btn btn-outline-primary" for="btnradio3">{{semesters[2]}}</label>
+              {% endif %} 
+                </div>
         </div>
         <div class="col">
           Mode : 
