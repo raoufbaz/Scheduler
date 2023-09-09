@@ -88,7 +88,7 @@ def get_combinations():
     return jsonify(jsonlist)
 
 
-# placeholder for schedules_page
+# receives combinations and renders schedules page
 @app.route('/schedules', methods=['POST'])
 def display_schedules():
     combinations = request.form.get('combinations')
