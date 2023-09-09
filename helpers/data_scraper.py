@@ -159,6 +159,8 @@ def get_course_title_and_program_id(course_name: str):
     html_doc = requests.get(URL).text
     soup = BeautifulSoup(html_doc, "html.parser")
     course_title_raw = soup.find("h1", {"class": "title"})
+    if course_title_raw is None:
+        return None
     title = course_title_raw.text
     trimmed = title.strip()
     split_strings = trimmed.split(" - ")
