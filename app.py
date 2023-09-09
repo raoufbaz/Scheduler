@@ -103,6 +103,16 @@ def placeholder_schedules():
     return render_template('schedules_page.html'), 200
 
 
+# Scrape data from a course outside the program
+@app.route('/horsProgramme', methods=['POST'])
+def hors_programme():
+    course_id = request.form.get('course_id')
+    data = data_scraper.get_course_title_and_program_id(json.loads(course_id))
+    if data is None:
+        return jsonify("cours introuvable"), 400
+    return jsonify(data), 200
+
+
 @app.route('/generate_schedule_image')
 def generate_schedule_image():
     courses = [

@@ -59,17 +59,7 @@
     <div class="col-11 border border-secondary rounded">
       <div class="row mt-3 mb-3">
       <!-- START COLS -->
-      <!-- <div class="col mt-2">
-        <div class="btn-group cours"> 
-        <input type="checkbox" id="placeholder" class="btn-check" name="">
-        <label style="width: 120px;background-color: rgb(122, 107, 255);" class="btn border text-light border-secondary" for="PLACEHOLDER">SELECTED
-        </label>
-        <button type="button" class="btn btn-outline-success">
-         
-          +
-        </button>
-      </div>
-      </div> -->
+
       {% for cours in courses %}
         <div class="col mt-2">
           <div class="btn-group"> 
@@ -95,75 +85,16 @@
      <h5 class="display-8">Ajouter un cours hors programme :</h5>
       <div class="col-4 mt-3">
         <div class="input-group mb-3">
-          <input type="text" class="form-control" placeholder="ex : INF1070" aria-label="Recipient's username" aria-describedby="button-addon2">
-          <button class="btn btn-outline-primary" type="button" id="button-addon2">Button</button>
+          <input type="text" id="SearchInput" class="form-control" placeholder="ex : INF1070" aria-label="recherche cours hors programme">
+          <button class="btn btn-outline-primary" type="button" id="recherche">Recherche</button>
         </div>
       </div>
     </div>
+    <!-- Liste cours hors programme -->
     <div class="row mt-3 mb-3">
-      <!-- START COLS -->
       <div class="col-6">
-        <div class="row">
-          <div class="col ml-5 mt-2">
-            <div class="btn-group"> 
-              <button type="button" class="btn btn-outline-danger">
-                <!-- <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
-                  <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
-                </svg> -->
-                -
-              </button>
-            <input type="checkbox" id="test" class="btn-check checkk shadow-lg" name="">
-            <label style="width: 120px;" class="btn bg-light border border-secondary" for="test">INF1132
-              <img src="{{ url_for('static', filename='images/computer.png') }}" width="15" height="15" alt="">
-            </label>
-          </div>
-          </div>
-          <div class="col mt-2">
-            <div class="btn-group"> 
-              <button type="button" class="btn btn-outline-danger">
-                <!-- <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
-                  <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
-                </svg> -->
-                -
-              </button>
-            <input type="checkbox" id="test" class="btn-check checkk shadow-lg" name="">
-            <label style="width: 120px;" class="btn bg-light border border-secondary" for="test">INF1132
-              <img src="{{ url_for('static', filename='images/computer.png') }}" width="15" height="15" alt="">
-            </label>
-          </div>
-          </div>
-          <div class="col mt-2">
-            <div class="btn-group"> 
-              <button type="button" class="btn btn-outline-danger">
-                <!-- <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
-                  <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
-                </svg> -->
-                -
-              </button>
-            <input type="checkbox" id="test" class="btn-check checkk shadow-lg" name="">
-            <label style="width: 120px;" class="btn bg-light border border-secondary" for="test">INF1132
-              <img src="{{ url_for('static', filename='images/computer.png') }}" width="15" height="15" alt="">
-            </label>
-          </div>
-          </div>
-          <div class="col mt-2">
-            <div class="btn-group"> 
-              <button type="button" class="btn btn-outline-danger">
-                <!-- <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
-                  <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
-                </svg> -->
-                -
-              </button>
-            <input type="checkbox" id="test" class="btn-check checkk shadow-lg" name="">
-            <label style="width: 120px;" class="btn bg-light border border-secondary" for="test">INF1132
-              <img src="{{ url_for('static', filename='images/computer.png') }}" width="15" height="15" alt="">
-            </label>
-          </div>
+        <div class="row" id="horsProgContainer">
         </div>
-        
-        </div>
-      </div>
-        <!-- END COLS -->
       </div>
     <!-- FILTRES -->
     <div class="row mt-3">
@@ -177,6 +108,8 @@
       </div>
     </div>
   </form>
+       <form id="form_horsProg">
+      </form>
 </div>
 {% endif %}
 <!-- END LISTE COURS -->
