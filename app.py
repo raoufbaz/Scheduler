@@ -62,13 +62,13 @@ def get_programme():
                            program_id=program_id), 200
 
 
-# makes combinations and redirect to Schedules page
+# responds to ajax request. makes combinations and returns success or error
 @app.route('/agendas', methods=['POST', 'GET'])
 def get_combinations():
     courses = json.loads(request.args.get('courses'))
     semester_raw = json.loads(request.args.get('semester'))
 
-    # convert semester to variables
+    # convert semester to variables to achieve 'A24' format
     season_map = {
         'A': 'fall',
         'E': 'summer',
@@ -86,6 +86,14 @@ def get_combinations():
     if len(jsonlist) == 0:
         return jsonify("no combination possible"), 400
     return jsonify(jsonlist)
+
+
+# placeholder for schedules_page
+@app.route('/schedules', methods=['POST'])
+def display_schedules():
+    combinations = request.form.get('combinations')
+    print(combinations)
+    return render_template('schedules_page.html'), 200
 
 
 # placeholder for schedules_page

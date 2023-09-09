@@ -1,73 +1,93 @@
-{% extends "layout.html" %}
-
-{% block content %}
+{% extends "layout.html" %} {% block content %}
 <!-- HEADER -->
 <section>
-    <div class="container">
-            <div class="row mt-5 pt-5">
-                <div class="col-6">
-                    <h2 class="h1 text-light">Simplifiez votre choix de cours.</h2>
-                    <p class="text-light">Scheduler est un outil moderne qui permet aux étudiants de génerer des combinaisons d'horaires selon leurs préferences. </p>
-                    <button type="button" class="text-align-center btn btn-outline-light">Voir les fonctionnalités</button>
-                </div>
-                <div class="col-6">
-                    <img src="{{ url_for('static', filename='images/schedule-template-featured.svg') }}" class="img-fluid rounded float-start" width="400" height="300" alt="">
-                    
-                </div>
-            </div>
+  <div class="container">
+    <div class="row mt-5 pt-5">
+      <div class="col-6">
+        <h2 class="h1 text-light">Simplifiez votre choix de cours.</h2>
+        <p class="text-light">
+          Scheduler est un outil moderne qui permet aux étudiants de génerer des
+          combinaisons d'horaires selon leurs préferences.
+        </p>
+        <button type="button" class="text-align-center btn btn-outline-light">
+          Voir les fonctionnalités
+        </button>
+      </div>
+      <div class="col-6">
+        <img
+          src="{{ url_for('static', filename='images/schedule-template-featured.svg') }}"
+          class="img-fluid rounded float-start"
+          width="400"
+          height="300"
+          alt=""
+        />
+      </div>
     </div>
-        </section>
+  </div>
+</section>
 
 <!-- SEARCH BAR -->
-<Section>
+<section>
   <div class="container">
     <div class="row justify-content-center align-items-center g-2">
-        <div class="col-6 text-light mt-5 pt-4 text-center"><h3 >Cherchez votre programme :</h3></div>
+      <div class="col-6 text-light mt-5 pt-4 text-center">
+        <h3>Cherchez votre programme :</h3>
+      </div>
     </div>
     <div class="row justify-content-center align-items-center mt-3">
-        <div class="col-8">
-           <form id="search_program" action="/programme" method="get">
-           
-           <div class="input-group rounded">
-            <select name="niveau"  id="niveau" class="form-select" >
-                <option value="certificat">Certificat</option>
-                <option value="baccalaureat" selected>Baccalauréat</option>
-                <option value="maitrise">Maîtrise</option>
-                <option value="doctorat">Doctorat</option>
-                <option value="concentration">Concentration</option>
-                <option value="dess">DESS</option>
-                <option value="majeure">Majeure</option>
-                <option value="mba">MBA</option>
-                <option value="microprogramme">Microprogramme</option>
-                <option value="programme court">Programme court</option>
-                <option value="mineure">Mineure</option>
-              </select>
-         
-            <input autocomplete="off" name="program_title" id="program_title" style="width:50%" required type="search" class="form-control"
-                   placeholder="Titre du programme"
-                   aria-label="Search"
-                   aria-describedby="search-addon"/>
-                   <button type="submit" class="btn btn-outline-light rounded" type="button">
-                    Recherche
-                  </button>   
-                  <input type="hidden" name="program_id" id="program_id" value="">   
-                </div>
-                </form>
-                <div class="row justify-content-center align-items-center g-2">
-                    <div class="col-7 pl-2">
-                    <div id="dropdown-menu" class="dropdown-menu"></div>    
-                    </div>
-                  </div>
-        </div>
+      <div class="col-8">
+        <form id="search_program" action="/programme" method="get">
+          <div class="input-group rounded">
+            <select name="niveau" id="niveau" class="form-select">
+              <option value="certificat">Certificat</option>
+              <option value="baccalaureat" selected>Baccalauréat</option>
+              <option value="maitrise">Maîtrise</option>
+              <option value="doctorat">Doctorat</option>
+              <option value="concentration">Concentration</option>
+              <option value="dess">DESS</option>
+              <option value="majeure">Majeure</option>
+              <option value="mba">MBA</option>
+              <option value="microprogramme">Microprogramme</option>
+              <option value="programme court">Programme court</option>
+              <option value="mineure">Mineure</option>
+            </select>
 
+            <input
+              autocomplete="off"
+              name="program_title"
+              id="program_title"
+              style="width: 50%"
+              required
+              type="search"
+              class="form-control"
+              placeholder="Titre du programme"
+              aria-label="Search"
+              aria-describedby="search-addon"
+            />
+            <button
+              type="submit"
+              class="btn btn-outline-light rounded"
+              type="button"
+            >
+              Recherche
+            </button>
+            <input type="hidden" name="program_id" id="program_id" value="" />
+          </div>
+        </form>
+        <div class="row justify-content-center align-items-center g-2">
+          <div class="col-7 pl-2">
+            <div id="dropdown-menu" class="dropdown-menu"></div>
+          </div>
         </div>
+      </div>
     </div>
-</Section>
+  </div>
+</section>
 {% if error %}
 <script>
-    var programInput = document.getElementById("program_title");
-    programInput.classList.add("border-danger");
-    programInput.attributes[7].value = "{{error}}";
+  var programInput = document.getElementById("program_title");
+  programInput.classList.add("border-danger");
+  programInput.attributes[7].value = "{{error}}";
 </script>
 {% endif %}
 <script src="{{ url_for('static', filename='scripts/autocompletion.js') }}"></script>

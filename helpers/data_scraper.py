@@ -138,7 +138,7 @@ def get_horaire(item: any):
                         "type": data[4].get_text(strip=True),
                         "heure_debut": start_time,
                         "heure_fin": end_time
-                        }
+                    }
                     horaires.append(json_obj)
                 return horaires
 
@@ -171,9 +171,9 @@ def get_course_title_and_program_id(course_name: str):
     if not title or not id:
         return ""
     json_obj = {
-            "program_id": id,
-            "title": title
-            }
+        "program_id": id,
+        "title": title
+    }
     return json.dumps(json_obj)
 
 
@@ -198,9 +198,9 @@ def get_program_courses(program_id: str):
         split_strings = trimmed.split(" - ")
         id, title = split_strings
         json_obj = {
-                "id": id,
-                "title": title
-                }
+            "id": id,
+            "title": title
+        }
         courses_list.append(json_obj)
 
     print("--- Saving Courses To CACHE ---")
