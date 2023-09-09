@@ -86,3 +86,9 @@ def get_combinations():
     if len(jsonlist) == 0:
         return jsonify("no combination possible"), 400
     return jsonify(jsonlist)
+
+
+# placeholder for schedules_page
+@app.route('/cours')
+def placeholder_schedules():
+    return render_template('schedules_page.html'), 200
