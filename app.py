@@ -99,6 +99,16 @@ def placeholder_schedules():
     return render_template('schedules_page.html'), 200
 
 
+# Scrape data from a course outside the program
+@app.route('/horsProgramme', methods=['POST'])
+def hors_programme():
+    course_id = request.form.get('course_id')
+    data = data_scraper.get_course_title_and_program_id(json.loads(course_id))
+    if data is None:
+        return jsonify("cours introuvable"), 400
+    return jsonify(data), 200
+
+
 @app.route('/generate_schedule_images', methods=['POST'])
 def generate_schedule_images():
     try:
@@ -106,10 +116,9 @@ def generate_schedule_images():
         data = request.json
 
         # Extract the 'combinations' data from the JSON
-        combinations = data.get('combinations')
+        comb = data.get('combinations')
 
-        # Generate the schedule images using the updated generate_for_frontend function
-        schedule_images_base64 = schedule_generator.generate_for_frontend(combinations)
+        schedule_images_base64 = schedule_generator.generate_for_frontend(comb)
 
         # Return the images as a response with the appropriate content type
         response_data = {
@@ -118,5 +127,5 @@ def generate_schedule_images():
         }
         return jsonify(response_data), 200
     except Exception as e:
-        # Handle any errors that may occur during image generation or data processing
+        # Handle any errors that may occur during image generation
         return jsonify({'error': str(e)}), 500

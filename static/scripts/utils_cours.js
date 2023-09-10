@@ -32,7 +32,6 @@ $(document).ready(function () {
     label.css("background-color", "");
     label.css("color", "#000");
 
-    console.log(label.text());
   });
 });
 
@@ -52,7 +51,7 @@ $(document).ready(function () {
 
     //get semester id
     var semester = $("input[name='semester']").val();
-
+    console.log(courses);
     //serialize data
     let formData = {
       courses: JSON.stringify(courses),
@@ -86,5 +85,66 @@ $(document).ready(function () {
       },
     });
     event.preventDefault();
+  });
+});
+
+///////////////////////////////////////////////
+// SECTION FEATURE "AJOUTER COURS HORS PROGRAMME"
+
+$(document).ready(function () {
+  $("#recherche").on("click", function () {
+    var SearchInput = $("#SearchInput").val();
+
+    //if string valid
+    if (SearchInput.length > 0 && SearchInput.length <= 10) {
+      //if exist in page
+      var elementExists = $('[id="' + SearchInput.toUpperCase() + '"]').length > 0;
+      if (elementExists) {
+        alert("Le cours est déja disponible.");
+      } else {
+        scrapeCourse(SearchInput);
+      }
+    } else {
+      alert("valeur non acceptée");
+    }
+  });
+});
+
+
+// ajax request to fetch course data
+function scrapeCourse(course_id) {
+  let formData = {
+    course_id: JSON.stringify(course_id),
+  };
+    $.ajax({
+      type: "POST",
+      url: "/horsProgramme",
+      data: formData,
+      success: function (response) {
+        var sectionContainer = $("#horsProgContainer");
+        var jsonObj = JSON.parse(response); 
+        var element = $('<div>', { class: 'col mt-2' });
+        var btnGroupDiv = $('<div>', { class: 'btn-group' });
+        var minusButton = $('<button>', { type: 'button', class: 'btn btn-outline-danger remove-HP', text: '-' });
+        var checkboxInput = $('<input>', { type: 'checkbox', id: course_id.toUpperCase(), class: 'btn-check shadow-lg actif', name: jsonObj.program_id });
+        var label = $('<label>', { style: 'width: 120px;', class: 'btn bg-light border border-secondary', for: course_id.toUpperCase(), text: course_id.toUpperCase() });
+        // var image = $('<img>', { src: '/static/images/computer.png', width: 15, height: 15, alt: '' });
+       
+        // label.append(image);
+        btnGroupDiv.append(minusButton, checkboxInput, label);
+        element.append(btnGroupDiv);
+        
+        sectionContainer.append(element);// You can perform additional actions or redirection here if needed
+      },
+      error: function (xhr) {
+        if (xhr.status == 400) 
+       alert(xhr.responseJSON);
+      },
+    });
+  }
+// onClick remove button
+$(document).ready(function () {
+  $(document).on("click", ".remove-HP", function () {
+    $(this).parent().parent().remove();
   });
 });
