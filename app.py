@@ -1,7 +1,6 @@
-from flask import Flask, json, render_template, request, jsonify, make_response
+from flask import Flask, json, render_template, request, jsonify
 from helpers import data_scraper, combinations_generator, schedule_generator
 import unicodedata
-import base64
 
 app = Flask(__name__)
 liste_programmes = []
@@ -81,20 +80,17 @@ def get_combinations():
     # scrape courses data and generate combinations
     courses = data_scraper.scrape_courses_from_list(courses, semester, year)
     combinations = combinations_generator.generate_combinations(courses)
-    jsonlist = []
-    for comb in combinations:
-        jsonlist.append(comb.agenda)
-    if len(jsonlist) == 0:
+    if len(combinations) == 0:
         return jsonify("no combination possible"), 400
-    return jsonify(jsonlist)
+    return jsonify(combinations)
 
 
 # receives combinations and renders schedules page
 @app.route('/schedules', methods=['POST'])
 def display_schedules():
-    combinations = request.form.get('combinations')
-    print(combinations)
-    return render_template('schedules_page.html'), 200
+    comb = request.form.get('combinations')
+    print(comb)
+    return render_template('schedules_page.html', combinations=comb), 200
 
 
 # placeholder for schedules_page
@@ -103,31 +99,24 @@ def placeholder_schedules():
     return render_template('schedules_page.html'), 200
 
 
-@app.route('/generate_schedule_image')
-def generate_schedule_image():
-    courses = [
-        # classes temporaire
-        ("lun", "GTI525 (C)", "18:00", "21:30", "red"),
-        ("mer", "GTI525 (TP)", "18:00", "20:00", "red"),
+@app.route('/generate_schedule_images', methods=['POST'])
+def generate_schedule_images():
+    try:
+        # Get the JSON data from the request body
+        data = request.json
 
-        ("mar", "GTI611 (TP)", "8:30", "11:30", "purple"),
-        ("ven", "GTI611 (C)", "8:30", "12:00", "purple"),
+        # Extract the 'combinations' data from the JSON
+        combinations = data.get('combinations')
 
-        ("mer", "LOG635 (TP)", "8:30", "10:30", "blue"),
-        ("mer", "LOG635 (TP)", "10:30", "12:30", "blue"),
-        ("ven", "LOG635 (C)", "13:30", "17:00", "blue"),
+        # Generate the schedule images using the updated generate_for_frontend function
+        schedule_images_base64 = schedule_generator.generate_for_frontend(combinations)
 
-        # Work
-        ("lun", "Desjardins", "8:00", "12:00", "green"),
-        ("lun", "Desjardins", "13:00", "17:00", "green"),
-        ("jeu", "Desjardins", "8:00", "12:00", "green"),
-        ("jeu", "Desjardins", "13:00", "17:00", "green"),
-        ("mer", "Desjardins", "13:00", "17:00", "green"),
-    ]
-    # Generate the schedule image
-    schedule_image_base64 = schedule_generator.generate_for_frontend(courses)
-
-    # Return the image as a response with the appropriate content type
-    response = make_response(base64.b64decode(schedule_image_base64))
-    response.headers['Content-Type'] = 'image/png'
-    return response
+        # Return the images as a response with the appropriate content type
+        response_data = {
+            'message': 'Images generated successfully',
+            'images': schedule_images_base64
+        }
+        return jsonify(response_data), 200
+    except Exception as e:
+        # Handle any errors that may occur during image generation or data processing
+        return jsonify({'error': str(e)}), 500

@@ -63,7 +63,7 @@ $(document).ready(function () {
       url: "/agendas",
       data: formData,
       success: function (response) {
-        console.log(response);
+        console.log(response)
         // Create a hidden form and submit it with the returned combinations
         var hiddenForm = $("<form>", {
           action: "/schedules",
@@ -75,7 +75,7 @@ $(document).ready(function () {
           .attr({
             type: "hidden",
             name: "combinations",
-            value: response,
+            value: JSON.stringify(response),
           })
           .appendTo(hiddenForm);
         // Append the form to the body and submit it

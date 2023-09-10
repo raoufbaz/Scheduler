@@ -141,6 +141,7 @@ def draw_course_rectangle(day, name, start_time, end_time, color):
     text_font = ImageFont.truetype("arial.ttf", 12)
     draw.text(text_position, name, fill="white", font=text_font)
 
+    # uncomment to save the image in png format
     # image.save("static/images/schedule_template.png")
 
 
@@ -148,52 +149,38 @@ def draw_course_rectangle(day, name, start_time, end_time, color):
 # Requires 5 params (day, name, start_hour, end_hour, color)
 def draw_courses(courses):
     for course in courses:
-        day, name, start_hour, end_hour, color = course
-        draw_course_rectangle(day, name, start_hour, end_hour, color)
+        day, name, start_hour, end_hour = course
+        draw_course_rectangle(day, name, start_hour, end_hour, "red")
 
 
 # Generate the schedule image and return it as base64 encoded PNG
-def generate_for_frontend(courses_data):
-    # Your drawing code here
-    draw_courses(courses_data)
+def generate_for_frontend(combinaison):
+    images = []  # Initialize an empty list to store the images
 
-    img_byte_array = io.BytesIO()
-    image.save(img_byte_array, format="PNG")
-    img_byte_array.seek(0)
-    base64_image = base64.b64encode(img_byte_array.read()).decode()
-    return base64_image
+    for comb in combinaison:
+        for course in comb:
+            draw_courses([course])
+
+            img_byte_array = io.BytesIO()
+            image.save(img_byte_array, format="PNG")
+            img_byte_array.seek(0)
+            base64_image = base64.b64encode(img_byte_array.read()).decode()
+        images.append(base64_image)  # Add the base64 image to the list of imgs
+
+    return images  # Return the list of base64-encoded images
 
 
 # Example usage:
 courses_data = [
-    # classes
-    ("lun", "GTI525 (C)", "18:00", "21:30", "red"),
-    ("mer", "GTI525 (TP)", "18:00", "20:00", "red"),
-
-    ("mar", "GTI611 (TP)", "8:30", "11:30", "purple"),
-    ("ven", "GTI611 (C)", "8:30", "12:00", "purple"),
-
-    ("mer", "LOG635 (TP)", "8:30", "10:30", "blue"),
-    ("mer", "LOG635 (TP)", "10:30", "12:30", "blue"),
-    ("ven", "LOG635 (C)", "13:30", "17:00", "blue"),
-
-    # Work
-    ("lun", "Desjardins", "8:00", "12:00", "green"),
-    ("lun", "Desjardins", "13:00", "17:00", "green"),
-    ("jeu", "Desjardins", "8:00", "12:00", "green"),
-    ("jeu", "Desjardins", "13:00", "17:00", "green"),
-    ("mer", "Desjardins", "13:00", "17:00", "green"),
-
-    # gym
-    ("mar", "Gym", "18:00", "20:00", "yellow"),
-    ("jeu", "Gym", "18:00", "20:00", "yellow"),
-    ("sam", "Gym", "10:00", "12:00", "yellow"),
-
-    # Self improvement
-    ("dim", "Self Improvement", "9:00", "12:00", "pink"),
-    ("mar", "Study", "13:00", "17:00", "pink"),
-    ("dim", "Study", "13:00", "17:00", "pink")
+    ("lun", "GTI525", "18:00", "20:00", "red"),
+    ("mer", "GTI525", "18:00", "21:30", "red"),
+    ("mar", "GTI611", "8:30", "11:30", "green"),
+    ("ven", "GTI611", "8:30", "12:00", "green"),
+    ("mer", "LOG635", "8:30", "12:00", "blue"),
+    ("ven", "LOG635", "13:30", "17:00", "blue"),
+    ("lun", "PHY335", "13:30", "17:00", "purple"),
+    ("jeu", "PHY335", "13:30", "17:00", "purple")
 ]
 
+# draw_courses(courses_data)
 draw_base_template()
-draw_courses(courses_data)

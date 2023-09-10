@@ -29,7 +29,7 @@ def generate_combinations(courses: list):
         for combinaison in combinations:
             agenda = Agenda(combinaison)
             result.append(agenda)
-        return result
+        return clean_data(result)
 
 
 # Checks if a combination is valid before appending it
@@ -52,3 +52,43 @@ def is_overlapping(group, combinations):
                 ):
                     return True
     return False
+
+
+day_mapping = {
+    'Lundi': 'lun',
+    'Mardi': 'mar',
+    'Mercredi': 'mer',
+    'Jeudi': 'jeu',
+    'Vendredi': 'ven',
+    'Samedi': 'sam',
+    'Dimanche': 'dim'
+}
+
+
+# ("lun", "GTI525", "18:00", "20:00", "red"),
+def clean_data(combinations):
+    jsonlist = []
+    for comb in combinations:
+        jsonlist.append(comb.agenda)
+
+    classes = []
+    for result in jsonlist:
+        comb = []
+        for course in result:
+            titre = course['titre']
+            groupe = course['groupe']
+            horaires = course['horaires']
+            typeAdded = []
+            for horaire in horaires:
+                typ = horaire['type']
+                jour = horaire['jour']
+                heure_deb = horaire['heure_debut']
+                format_heure_debut = f"{heure_deb // 100}:{heure_deb % 100:02}"
+                heure_fin = horaire['heure_fin']
+                format_heure_fin = f"{heure_fin // 100}:{heure_fin % 100:02}"
+                if not typeAdded.__contains__(typ):
+                    comb.append((day_mapping.get(jour), titre,
+                                 format_heure_debut, format_heure_fin))
+                    typeAdded.append(typ)
+        classes.append(comb)
+    return classes

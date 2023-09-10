@@ -1,5 +1,6 @@
-{% extends "layout.html" %} {% block content %}
+{% extends "layout.html" %}
 
+{% block content %}
 <div class="container">
   <div class="row justify-content-center">
     <div class="col-11 rounded bg-light">
@@ -9,25 +10,17 @@
       {% else %}
       <h2 class="text-center mt-3">TITLE PLACEHOLDER</h2>
       {% endif %}
+      <script>
+        var combinations = JSON.parse('{{ combinations | safe }}');
+      </script>
 
-
-    <!-- SCHEDULES LIST -->
-    <div class="row justify-content-center align-items-center">
-      <div class="col">
-        <img id="scheduleImage1" src="" class="img-fluid" alt="...">
-      </div>
-      <div class="col">
-        <img id="scheduleImage2" src="" class="img-fluid" alt="...">
-      </div>
-      <div class="col">
-        <img id="scheduleImage3" src="" class="img-fluid" alt="...">
-
+      <!-- SCHEDULES LIST -->
+      <div class="row" id="schedulesList">
+        <!-- Dynamic generation of <img> tags will happen here -->
       </div>
     </div>
   </div>
 </div>
-</div>
-</div>
-  <!-- <script src="{{ url_for('static', filename='scripts/utils_cours.js') }}"></script> -->
-  <script src="{{ url_for('static', filename='scripts/schedule_loader.js') }}"></script> 
+
+<script src="{{ url_for('static', filename='scripts/schedule_loader.js') }}"></script>
 {% endblock %}
