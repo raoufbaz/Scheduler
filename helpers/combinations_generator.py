@@ -65,7 +65,6 @@ day_mapping = {
 }
 
 
-# ("lun", "GTI525", "18:00", "20:00", "red"),
 def clean_data(combinations):
     jsonlist = []
     for comb in combinations:
@@ -92,3 +91,18 @@ def clean_data(combinations):
                     typeAdded.append(typ)
         classes.append(comb)
     return classes
+
+
+def filter_unavailability(criteria, combinations: list):
+    json_obj = {
+        "jour": "lundi",
+        "heure_debut": "9",
+        "heure_fin": "13"
+        }
+    for comb in combinations:
+        if is_overlapping(criteria, combinations):
+            combinations.remove(comb)
+    return combinations            
+
+     #adapt object pour reutiliser is_overlapping
+

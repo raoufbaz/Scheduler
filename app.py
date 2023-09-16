@@ -88,15 +88,12 @@ def get_combinations():
 # receives combinations and renders schedules page
 @app.route('/schedules', methods=['POST'])
 def display_schedules():
-    comb = request.form.get('combinations')
-    print(comb)
-    return render_template('schedules_page.html', combinations=comb), 200
-
-
-# placeholder for schedules_page
-@app.route('/cours')
-def placeholder_schedules():
-    return render_template('schedules_page.html'), 200
+    combinations = request.form.get('combinations')
+    #semester = request.form.get('semester') #TODO add senester and program id and title for result page
+    # program = request.form.get('program')
+    # filtre = request.form.get('filtres')
+    print(combinations)
+    return render_template('schedules_page.html', combinations=combinations), 200
 
 
 # Scrape data from a course outside the program
