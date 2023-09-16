@@ -10,10 +10,16 @@ left_margin = 40
 bottom_margin = 10
 
 # Create a new image with white background
-image = Image.new("RGB", (main_width, main_height), "white")
+image = Image.new("RGB", (main_width, main_height), (248, 249, 250))
 # Draw smaller rectangles side by side and add labels
 draw = ImageDraw.Draw(image)
-font = ImageFont.truetype("arial.ttf", 12)
+system_font_name = "Arial"
+
+try:
+    font = ImageFont.truetype(f"{system_font_name}.ttf", 12)
+except IOError:
+    # If the system font file doesn't exist, use a fallback font
+    font = ImageFont.load_default()
 
 days_position = {
         "lun": {"left": 40, "right": 145},
@@ -73,8 +79,13 @@ def draw_base_template():
         label_width = draw.textlength(label, font=font)
         label_x = (left + (small_width - label_width) // 2)-15
         label_y = 5  # Adjust label position as needed
-        draw.text((label_x, label_y), label, font=ImageFont.
-                  truetype("arial.ttf", 17), fill=(64, 64, 64))
+
+        try:
+            text_font = ImageFont.truetype(f"{system_font_name}.ttf", 17)
+        except IOError:
+            # If the system font file doesn't exist, use a fallback font
+            text_font = ImageFont.load_default()
+        draw.text((label_x, label_y), label, font=text_font, fill=(64, 64, 64))
 
     hours_of_day = list(range(8, 24))  # Hours from 8 to 23
     label_y_hour = left_margin  # Initial y-coordinate for the first label
@@ -115,7 +126,7 @@ def draw_base_template():
 
 
 # generates the course on the schedule depending on given parameters
-def draw_course_rectangle(day, name, start_time, end_time, color):
+def draw_course_rectangle(day, name, start_time, end_time, color, draw):
     left = days_position[day]["left"]
     right = days_position[day]["right"]
     top = hours_position[start_time]
@@ -132,68 +143,77 @@ def draw_course_rectangle(day, name, start_time, end_time, color):
                            fill=colors[color]["shadow"])
     # hour label
     text_position = (left+5, top+2)  # Text position (left, top)
-    text_font = ImageFont.truetype("arial.ttf", 12)
     draw.text(text_position, start_time+" - "+end_time, fill="white",
-              font=text_font)
-
+              font=font)
     # name label
     text_position = (left+5, top+15)  # Text position (left, top)
-    text_font = ImageFont.truetype("arial.ttf", 12)
-    draw.text(text_position, name, fill="white", font=text_font)
-
+    draw.text(text_position, name, fill="white", font=font)
+    # uncomment to save the image in png format
     # image.save("static/images/schedule_template.png")
+
+
+color_assignments = {}
+
+
+def assignColor(name):
+    if name in color_assignments:
+        return color_assignments[name]
+    else:
+        # Assign a color dynamically (you can use any method to assign colors)
+        available_colors = ["red", "blue", "green", "purple", "yellow"]
+        for color in available_colors:
+            if color not in color_assignments.values():
+                color_assignments[name] = color
+                return color
+        # If all colors are assigned, return a default color or raise an error
+        return "pink"
+
+
+def resetColorAssignments():
+    color_assignments.clear()
 
 
 # draws the courses on the baseline image.
 # Requires 5 params (day, name, start_hour, end_hour, color)
-def draw_courses(courses):
+def draw_courses(courses, draw):
     for course in courses:
-        day, name, start_hour, end_hour, color = course
-        draw_course_rectangle(day, name, start_hour, end_hour, color)
+        day, name, start_hour, end_hour = course
+        draw_course_rectangle(day, name, start_hour, end_hour,
+                              assignColor(name), draw)
 
 
 # Generate the schedule image and return it as base64 encoded PNG
-def generate_for_frontend(courses_data):
-    # Your drawing code here
-    draw_courses(courses_data)
+def generate_for_frontend(combinaison):
+    images = []  # Initialize an empty list to store the images
+    template_path = "static/images/schedule_template.png"
 
-    img_byte_array = io.BytesIO()
-    image.save(img_byte_array, format="PNG")
-    img_byte_array.seek(0)
-    base64_image = base64.b64encode(img_byte_array.read()).decode()
-    return base64_image
+    for comb in combinaison:
+        resetColorAssignments()
+        combined_image = Image.open(template_path).copy()
+        draw = ImageDraw.Draw(combined_image)
+        for course in comb:
+            draw_courses([course], draw)
+
+            img_byte_array = io.BytesIO()
+            combined_image.save(img_byte_array, format="PNG")
+            img_byte_array.seek(0)
+            base64_image = base64.b64encode(img_byte_array.read()).decode()
+        images.append(base64_image)  # Add the base64 image to the list of imgs
+
+    return images  # Return the list of base64-encoded images
 
 
 # Example usage:
 courses_data = [
-    # classes
-    ("lun", "GTI525 (C)", "18:00", "21:30", "red"),
-    ("mer", "GTI525 (TP)", "18:00", "20:00", "red"),
-
-    ("mar", "GTI611 (TP)", "8:30", "11:30", "purple"),
-    ("ven", "GTI611 (C)", "8:30", "12:00", "purple"),
-
-    ("mer", "LOG635 (TP)", "8:30", "10:30", "blue"),
-    ("mer", "LOG635 (TP)", "10:30", "12:30", "blue"),
-    ("ven", "LOG635 (C)", "13:30", "17:00", "blue"),
-
-    # Work
-    ("lun", "Desjardins", "8:00", "12:00", "green"),
-    ("lun", "Desjardins", "13:00", "17:00", "green"),
-    ("jeu", "Desjardins", "8:00", "12:00", "green"),
-    ("jeu", "Desjardins", "13:00", "17:00", "green"),
-    ("mer", "Desjardins", "13:00", "17:00", "green"),
-
-    # gym
-    ("mar", "Gym", "18:00", "20:00", "yellow"),
-    ("jeu", "Gym", "18:00", "20:00", "yellow"),
-    ("sam", "Gym", "10:00", "12:00", "yellow"),
-
-    # Self improvement
-    ("dim", "Self Improvement", "9:00", "12:00", "pink"),
-    ("mar", "Study", "13:00", "17:00", "pink"),
-    ("dim", "Study", "13:00", "17:00", "pink")
+    ("lun", "GTI525", "18:00", "20:00", "red"),
+    ("mer", "GTI525", "18:00", "21:30", "red"),
+    ("mar", "GTI611", "8:30", "11:30", "green"),
+    ("ven", "GTI611", "8:30", "12:00", "green"),
+    ("mer", "LOG635", "8:30", "12:00", "blue"),
+    ("ven", "LOG635", "13:30", "17:00", "blue"),
+    ("lun", "PHY335", "13:30", "17:00", "purple"),
+    ("jeu", "PHY335", "13:30", "17:00", "purple")
 ]
 
+# draw_courses(courses_data)
 draw_base_template()
-draw_courses(courses_data)

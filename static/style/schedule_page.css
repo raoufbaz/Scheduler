@@ -1,0 +1,25 @@
+/* CSS for vertical stacking of image-label pairs */
+#schedulesList {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Optional: To horizontally center align the pairs */
+    gap: 20px; /* Optional: To add spacing between image-label pairs */
+  }
+  
+  .img-container {
+    text-align: center; /* Optional: To center-align text */
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 3%;
+  }
+
+  .img-label {
+    font-weight: bold;
+    font-size: 24px;
+    color: rgb(97, 97, 97);
+  }
+
+  .titre-horaire {
+    padding-top: 2%;
+    padding-bottom: 3%;
+  }
