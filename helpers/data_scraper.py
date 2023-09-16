@@ -4,6 +4,7 @@ import json
 import os
 import unicodedata
 from models.course import Course
+import re
 
 # URL_LINK_EXAMPLE =
 # f"https://etudier.uqam.ca/wshoraire/cours/INF1120/20233/7316"
@@ -35,7 +36,6 @@ def scrape_class_info(course_id: str, year: str, semester: str, program):
         URL = (
             f"https://etudier.uqam.ca/wshoraire/cours/"
             f"{course_id}/{year}{semester}/{program}")
-        print(URL)
         html_doc = requests.get(URL).text
         soup = BeautifulSoup(html_doc, "html.parser")
         groups = soup.find_all("div", {"class": "groupe"})
@@ -209,6 +209,19 @@ def get_program_courses(program_id: str):
     save_courses_to_cache(program_id, courses_list)
 
     return json.dumps(load_courses_from_cache(program_id))
+
+
+def get_current_semesters(program_id: str):
+    URL = f"https://etudier.uqam.ca/programme?code={program_id}#bloc_cours"
+    html_doc = requests.get(URL).text
+    soup = BeautifulSoup(html_doc, "html.parser")
+    legende = soup.find("div", {"class": "legende"})
+    trimestres = legende.find("div", {"class": "trimestres"})
+    string = trimestres.text.strip()
+    # Use regex to split the input string into three parts
+    pattern = r'([A-Z]\d+)'
+    result = re.findall(pattern, string)
+    return list(result)
 
 
 # Scrapes all programs from the website
