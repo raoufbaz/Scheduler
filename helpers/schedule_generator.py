@@ -79,8 +79,13 @@ def draw_base_template():
         label_width = draw.textlength(label, font=font)
         label_x = (left + (small_width - label_width) // 2)-15
         label_y = 5  # Adjust label position as needed
-        draw.text((label_x, label_y), label, font=ImageFont.
-                  truetype(font, 17), fill=(64, 64, 64))
+
+        try:
+            text_font = ImageFont.truetype(f"{system_font_name}.ttf", 17)
+        except IOError:
+            # If the system font file doesn't exist, use a fallback font
+            text_font = ImageFont.load_default()
+        draw.text((label_x, label_y), label, font=text_font, fill=(64, 64, 64))
 
     hours_of_day = list(range(8, 24))  # Hours from 8 to 23
     label_y_hour = left_margin  # Initial y-coordinate for the first label
@@ -138,15 +143,11 @@ def draw_course_rectangle(day, name, start_time, end_time, color, draw):
                            fill=colors[color]["shadow"])
     # hour label
     text_position = (left+5, top+2)  # Text position (left, top)
-    text_font = ImageFont.truetype(font, 12)
     draw.text(text_position, start_time+" - "+end_time, fill="white",
-              font=text_font)
-
+              font=font)
     # name label
     text_position = (left+5, top+15)  # Text position (left, top)
-    text_font = ImageFont.truetype(font, 12)
-    draw.text(text_position, name, fill="white", font=text_font)
-
+    draw.text(text_position, name, fill="white", font=font)
     # uncomment to save the image in png format
     # image.save("static/images/schedule_template.png")
 
