@@ -17,6 +17,10 @@ async function loadScheduleImages() {
 
       // Loop through the images and display them in the corresponding containers
       images.forEach((imageBase64, index) => {
+        const imageLabel = document.createElement('span');
+        imageLabel.textContent = `Horaire #${index + 1}`;
+        imageLabel.className = 'img-label';
+
         const imageElement = document.createElement('img');
         imageElement.src = `data:image/png;base64,${imageBase64}`;
         imageElement.className = 'img-fluid';
@@ -24,6 +28,7 @@ async function loadScheduleImages() {
         // Create a new div container for each image
         const imageContainer = document.createElement('div');
         imageContainer.className = 'img-container';
+        imageContainer.appendChild(imageLabel);
         imageContainer.appendChild(imageElement);
 
         // Append the image container to the schedulesList div

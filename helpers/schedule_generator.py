@@ -10,7 +10,7 @@ left_margin = 40
 bottom_margin = 10
 
 # Create a new image with white background
-image = Image.new("RGB", (main_width, main_height), "white")
+image = Image.new("RGB", (main_width, main_height), (248, 249, 250))
 # Draw smaller rectangles side by side and add labels
 draw = ImageDraw.Draw(image)
 font = ImageFont.truetype("arial.ttf", 12)
@@ -115,7 +115,7 @@ def draw_base_template():
 
 
 # generates the course on the schedule depending on given parameters
-def draw_course_rectangle(day, name, start_time, end_time, color):
+def draw_course_rectangle(day, name, start_time, end_time, color, draw):
     left = days_position[day]["left"]
     right = days_position[day]["right"]
     top = hours_position[start_time]
@@ -145,24 +145,50 @@ def draw_course_rectangle(day, name, start_time, end_time, color):
     # image.save("static/images/schedule_template.png")
 
 
+color_assignments = {}
+
+
+def assignColor(name):
+    if name in color_assignments:
+        return color_assignments[name]
+    else:
+        # Assign a color dynamically (you can use any method to assign colors)
+        available_colors = ["red", "blue", "green", "purple", "yellow"]
+        for color in available_colors:
+            if color not in color_assignments.values():
+                color_assignments[name] = color
+                return color
+        # If all colors are assigned, return a default color or raise an error
+        return "pink"
+
+
+def resetColorAssignments():
+    color_assignments.clear()
+
+
 # draws the courses on the baseline image.
 # Requires 5 params (day, name, start_hour, end_hour, color)
-def draw_courses(courses):
+def draw_courses(courses, draw):
     for course in courses:
         day, name, start_hour, end_hour = course
-        draw_course_rectangle(day, name, start_hour, end_hour, "red")
+        draw_course_rectangle(day, name, start_hour, end_hour,
+                              assignColor(name), draw)
 
 
 # Generate the schedule image and return it as base64 encoded PNG
 def generate_for_frontend(combinaison):
     images = []  # Initialize an empty list to store the images
+    template_path = "static/images/schedule_template.png"
 
     for comb in combinaison:
+        resetColorAssignments()
+        combined_image = Image.open(template_path).copy()
+        draw = ImageDraw.Draw(combined_image)
         for course in comb:
-            draw_courses([course])
+            draw_courses([course], draw)
 
             img_byte_array = io.BytesIO()
-            image.save(img_byte_array, format="PNG")
+            combined_image.save(img_byte_array, format="PNG")
             img_byte_array.seek(0)
             base64_image = base64.b64encode(img_byte_array.read()).decode()
         images.append(base64_image)  # Add the base64 image to the list of imgs

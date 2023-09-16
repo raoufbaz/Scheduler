@@ -1,22 +1,21 @@
 {% extends "layout.html" %}
 
+{% block extra_head %}
+<link rel="stylesheet" href="static/style/schedule_page.css">
+{% endblock %}
+
 {% block content %}
 <div class="container">
-  <div class="row justify-content-center">
+  <div class="justify-content-center">
     <div class="col-11 rounded bg-light">
       <!-- HEADER -->
-      {% if title %}
-      <h2 class="text-center mt-3">{{ title }}</h2>
-      {% else %}
-      <h2 class="text-center mt-3">TITLE PLACEHOLDER</h2>
-      {% endif %}
+      <h2 class="text-center mt-3 titre-horaire">Horaires disponibles</h2>
       <script>
         var combinations = JSON.parse('{{ combinations | safe }}');
       </script>
-
       <!-- SCHEDULES LIST -->
-      <div class="row" id="schedulesList">
-        <!-- Dynamic generation of <img> tags will happen here -->
+      <div class="col-12" id="schedulesList">
+        <!-- Dynamic generation of imgs happen here -->
       </div>
     </div>
   </div>
