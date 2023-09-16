@@ -80,7 +80,7 @@ def draw_base_template():
         label_x = (left + (small_width - label_width) // 2)-15
         label_y = 5  # Adjust label position as needed
         draw.text((label_x, label_y), label, font=ImageFont.
-                  truetype("arial.ttf", 17), fill=(64, 64, 64))
+                  truetype(font, 17), fill=(64, 64, 64))
 
     hours_of_day = list(range(8, 24))  # Hours from 8 to 23
     label_y_hour = left_margin  # Initial y-coordinate for the first label
@@ -138,13 +138,13 @@ def draw_course_rectangle(day, name, start_time, end_time, color, draw):
                            fill=colors[color]["shadow"])
     # hour label
     text_position = (left+5, top+2)  # Text position (left, top)
-    text_font = ImageFont.truetype("arial.ttf", 12)
+    text_font = ImageFont.truetype(font, 12)
     draw.text(text_position, start_time+" - "+end_time, fill="white",
               font=text_font)
 
     # name label
     text_position = (left+5, top+15)  # Text position (left, top)
-    text_font = ImageFont.truetype("arial.ttf", 12)
+    text_font = ImageFont.truetype(font, 12)
     draw.text(text_position, name, fill="white", font=text_font)
 
     # uncomment to save the image in png format
