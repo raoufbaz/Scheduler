@@ -52,3 +52,17 @@ def is_overlapping(group, combinations):
                 ):
                     return True
     return False
+
+
+def filter_unavailability(criteria, combinations: list):
+    json_obj = {
+        "jour": "lundi",
+        "heure_debut": "9",
+        "heure_fin": "13"
+        }
+    for comb in combinations:
+        if is_overlapping(criteria, combinations):
+            combinations.remove(comb)
+    return combinations            
+
+     #adapt object pour reutiliser is_overlapping
