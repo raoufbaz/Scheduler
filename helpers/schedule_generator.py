@@ -13,7 +13,13 @@ bottom_margin = 10
 image = Image.new("RGB", (main_width, main_height), (248, 249, 250))
 # Draw smaller rectangles side by side and add labels
 draw = ImageDraw.Draw(image)
-font = ImageFont.truetype("arial.ttf", 12)
+system_font_name = "Arial"
+
+try:
+    font = ImageFont.truetype(f"{system_font_name}.ttf", 12)
+except IOError:
+    # If the system font file doesn't exist, use a fallback font
+    font = ImageFont.load_default()
 
 days_position = {
         "lun": {"left": 40, "right": 145},
