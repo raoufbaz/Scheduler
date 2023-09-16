@@ -13,7 +13,7 @@ bottom_margin = 10
 image = Image.new("RGB", (main_width, main_height), (248, 249, 250))
 # Draw smaller rectangles side by side and add labels
 draw = ImageDraw.Draw(image)
-system_font_name = "Arial"
+system_font_name = "arial"
 
 try:
     font = ImageFont.truetype(f"{system_font_name}.ttf", 12)
