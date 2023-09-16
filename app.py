@@ -69,7 +69,7 @@ def get_programme():
 def get_combinations():
     courses = json.loads(request.args.get('courses'))
     semester_raw = json.loads(request.args.get('semester'))
-
+    unavailability_list = request.args.get('unavailability')
     # convert semester to variables to achieve 'A24' format
     season_map = {
         'A': 'fall',
@@ -82,6 +82,16 @@ def get_combinations():
     # scrape courses data and generate combinations
     courses = data_scraper.scrape_courses_from_list(courses, semester, year)
     combinations = combinations_generator.generate_combinations(courses)
+
+    # process unavailability
+    if unavailability_list is not None:
+        unavailability_list = json.loads(unavailability_list)
+        combinations = combinations_generator.filter_unavailability(
+            unavailability_list, combinations=combinations)
+    # if len(json.dumps(unavailability_list)) != 0:
+    #     print(unavailability_list)
+    # else:
+    #     print("test")
     if len(combinations) == 0:
         return jsonify("no combination possible"), 400
     return jsonify(combinations)
@@ -95,7 +105,6 @@ def display_schedules():
     # semester = request.form.get('semester')
     # program = request.form.get('program')
     # filtre = request.form.get('filtres')
-    print(combinations)
     return render_template('schedules_page.html',
                            combinations=combinations), 200
 

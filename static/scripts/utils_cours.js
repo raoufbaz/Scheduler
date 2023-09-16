@@ -54,7 +54,7 @@ $(document).ready(function () {
       return 0;
     }
     //get semester id
-    var semester = $("input[name='semester']").val();
+    var semester = $('input[name="semester"]:checked').val();
     
     //get unavailability list
     var raw_unav_list = $(".unavailability");

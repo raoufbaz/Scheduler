@@ -94,13 +94,23 @@ def clean_data(combinations):
 
 
 def filter_unavailability(criteria, combinations: list):
-    # json_obj = {
-    #     "jour": "lundi",
-    #     "heure_debut": "9",
-    #     "heure_fin": "13"
-    #     }
+
     for comb in combinations:
-        if is_overlapping(criteria, combinations):
+        if is_overlapping_filter(criteria, combinations):
             combinations.remove(comb)
     return combinations
     # adapt object pour reutiliser is_overlapping
+
+
+# Compares a list of unavailabilities with a list of combination
+def is_overlapping_filter(indisponibilites, combinations):
+    for comb in combinations:
+        for h1 in indisponibilites:
+            for h2 in comb:
+                if (
+                    h1['day'] == h2[0] and
+                    h1['start_time'] <= h2[3] and
+                    h1['end_time'] >= h2[2]
+                ):
+                    return True
+    return False
