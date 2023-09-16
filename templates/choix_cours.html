@@ -118,17 +118,19 @@
           <div class="col-2">
             <select class="form-select" aria-label="Default select example">
               <option selected>De</option>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="3">4</option>
-              <option value="3">5</option>
+              <option value="1">06:00</option>
+              <option value="2">06:30</option>
+              <option value="1">07:00</option>
+              <option value="2">07:30</option>
+              <option value="2">08:30</option>
+              <option value="2">09:00</option>
+
             </select>
           </div>
           <div class="col-2">
             <select class="form-select" aria-label="Default select example">
               <option selected>A</option>
-              <option value="1">1</option>
+              <option value="1">12:00</option>
               <option value="2">2</option>
               <option value="3">3</option>
               <option value="3">4</option>
@@ -139,7 +141,15 @@
             <button type="button" class="btn btn-primary">Ajouter</button>
             </div>
         </div>
-       
+       <div class="row mt-3" id="UnavailabilityContainer">
+        <div class="col-12 mt-2">
+          <div class="btn-group"><input type="checkbox" class="btn-check shadow-lg unavailability"  value="Lundi,18:00,21:00"><label  class="btn bg-light border border-secondary" >Lundi : 09:00 à 12:00 </label><button type="button" class="btn btn-outline-danger remove-HP">-</button></div>
+        </div>
+        <div class="col-12 mt-2">
+          <div class="btn-group"><input type="checkbox" class="btn-check shadow-lg unavailability" ><label class="btn bg-light border border-secondary" >Lundi : 18:00 à 21:00 </label><button type="button" class="btn btn-outline-danger remove-HP">-</button></div>
+          
+        </div>
+       </div>
       </div>
 
     </div>

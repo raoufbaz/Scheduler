@@ -48,15 +48,43 @@ $(document).ready(function () {
       };
       courses.push(courseObj);
     });
-
+    if (courses.length ==0 ){
+      event.preventDefault();
+      alert("Aucun cours selectionné");
+      return 0;
+    }
     //get semester id
     var semester = $("input[name='semester']").val();
     console.log(courses);
+    
+    //get filters unavailability
+    var raw_list = $(".unavailability");
+    var unavailabilityList = [];
+    if(raw_list.length>0){
+    raw_list.each(function () {
+      var strings = $(this).value.split(","); 
+      var unavailabilityObj = {
+        day: strings[0],
+        start_time: strings[1],
+        end_time: strings[2],
+      };
+      unavailabilityList.push(unavailabilityObj);
+    });
+  }
+  
     //serialize data
     let formData = {
       courses: JSON.stringify(courses),
       semester: JSON.stringify(semester),
+      
     };
+    console.log("formData before appending: " + formData);
+    if(unavailabilityList.length > 0)
+    formData.append({
+      unavailabilityList : JSON.stringify(unavailabilityList)
+    });
+    console.log("formData after appending: " + formData);
+
     $.ajax({
       type: "GET",
       url: "/agendas",
