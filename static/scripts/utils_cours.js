@@ -48,21 +48,50 @@ $(document).ready(function () {
       };
       courses.push(courseObj);
     });
-
+    if (courses.length ==0 ){
+      event.preventDefault();
+      alert("Aucun cours selectionné");
+      return 0;
+    }
     //get semester id
     var semester = $("input[name='semester']").val();
-    console.log(courses);
-    //serialize data
-    let formData = {
+    
+    //get unavailability list
+    var raw_unav_list = $(".unavailability");
+    var unav_list = [];
+    if(raw_list.length > 0){
+    raw_unav_list.each(function () {
+      var strings = $(this).val().split(","); 
+      var unavailabilityObj = {
+        day: strings[0],
+        start_time: strings[1],
+        end_time: strings[2],
+      };
+      unav_list.push(unavailabilityObj);
+    });
+  }
+
+   //serialize data
+  let formData;
+  if(unav_list.length > 0){
+   formData = {
+      courses: JSON.stringify(courses),
+      semester: JSON.stringify(semester),
+      unavailability: JSON.stringify(unav_list) 
+  }}
+  else{
+    formData = {
       courses: JSON.stringify(courses),
       semester: JSON.stringify(semester),
     };
+  }
+   console.log(formData);
+   
     $.ajax({
       type: "GET",
       url: "/agendas",
       data: formData,
       success: function (response) {
-        console.log(response)
         // Create a hidden form and submit it with the returned combinations
         var hiddenForm = $("<form>", {
           action: "/schedules",
@@ -147,4 +176,65 @@ $(document).ready(function () {
   $(document).on("click", ".remove-HP", function () {
     $(this).parent().parent().remove();
   });
+});
+
+///////////////////////////////////////////////
+// SECTION FEATURE "Ajouter indisponibilite"
+
+$(document).ready(function() {
+  var startSelect = $("#start_time");
+  var endSelect = $("#end_time");
+  var day = $("#day");
+
+  // Function to populate the select elements with time options
+  function populateTimeSelect(select) {
+      for (var hour = 6; hour <= 23; hour++) {
+          for (var minute = 0; minute < 60; minute += 30) {
+              var displayHour = (hour < 10) ? "0" + hour : hour;
+              var displayMinute = (minute === 0) ? "00" : minute;
+              var optionValue = displayHour + ":" + displayMinute;
+              select.append($("<option></option>")
+                  .attr("value", optionValue)
+                  .text(optionValue));
+          }
+      }
+  }
+  // Populate the select elements with time options
+  populateTimeSelect(startSelect);
+  populateTimeSelect(endSelect);
+
+
+   // Add a click event listener to the button
+   $("#btnUnav").on("click", function() {
+    var selectedStartTime = startSelect.val();
+    var selectedEndTime = endSelect.val();
+
+    // Check if a valid option has been selected (not the placeholder)
+    if (selectedStartTime && selectedEndTime && day.val()) {
+        // Compare the start and end times
+        if (selectedStartTime < selectedEndTime) {
+            appendUnavailabilityElement(day.val(),selectedStartTime,selectedEndTime);
+        } else {
+            alert("La valeur de fin doit etre apres le debut.");
+        }
+    } else {
+        alert("Selectionnez une valeur valide.");
+    }
+});
+
+ // Function to populate the select elements with time options
+ function appendUnavailabilityElement(day,start_time,end_time) {
+  var sectionContainer = $("#UnavailabilityContainer");
+  var element = $('<div>', { class: 'col-12 mt-2' });
+  var btngroup = $('<div>', { class: 'btn-group' });
+  var input = $('<input>', {type: 'checkbox', class: 'btn-check shadow-lg unavailability', value:day+","+start_time+","+end_time });
+  var label = $('<label>', {class: 'btn bg-light border border-secondary', text: day + " : " + start_time + " à " + end_time });
+  var minusButton = $('<button>', { type: 'button', class: 'btn btn-outline-danger remove-HP', text: '-' });
+
+  btngroup.append(input, label, minusButton);
+  element.append(btngroup);
+  
+  sectionContainer.append(element);
+  }
+
 });

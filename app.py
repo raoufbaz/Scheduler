@@ -57,8 +57,10 @@ def get_programme():
         error = "Entrez un nom de programme valide."
         return render_template("index.html", error=error), 400
     list = json.loads(list)
+    semesters = data_scraper.get_current_semesters(program_id)
     return render_template('choix_cours.html', courses=list,
                            title=program_title,
+                           semesters=semesters,
                            program_id=program_id), 200
 
 

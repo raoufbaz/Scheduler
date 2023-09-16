@@ -16,16 +16,18 @@
           <div class="col">
             Session : 
             <div class="btn-group"> 
-              
-                  <input type="radio" value="A23" class="btn-check" name="semester" id="btnradio1" autocomplete="off" checked>
-                   <label class="btn btn-outline-primary" for="btnradio1">A23</label>
-            
-                  <input type="radio" value="H24" class="btn-check" name="semester" id="btnradio2" autocomplete="off">
-                  <label class="btn btn-outline-primary" for="btnradio2">H24</label>
-            
-                  <input type="radio" value="E23" class="btn-check" name="semester" id="btnradio3" autocomplete="off">
-                  <label class="btn btn-outline-primary" for="btnradio3">E23</label>
-          </div>
+              {% if semesters %}
+              <script>console.log("{{semesters[0]}}")</script>
+              <input type="radio" value="{{semesters[0]}}" class="btn-check" name="semester" id="btnradio1" autocomplete="off" checked>
+               <label class="btn btn-outline-primary" for="btnradio1">{{semesters[0]}}</label>
+        
+              <input type="radio" value="{{semesters[1]}}" class="btn-check" name="semester" id="btnradio2" autocomplete="off">
+              <label class="btn btn-outline-primary" for="btnradio2">{{semesters[1]}}</label>
+        
+              <input type="radio" value="{{semesters[2]}}" class="btn-check" name="semester" id="btnradio3" autocomplete="off">
+              <label class="btn btn-outline-primary" for="btnradio3">{{semesters[2]}}</label>
+          {% endif %} 
+      </div>
         </div>
         <div class="col">
           Mode : 
@@ -106,40 +108,35 @@
         <p>Ajouter une indisponibilite :</p>
         <div class="row">
           <div class="col-2">
-            <select class="form-select" aria-label="Default select example">
-              <option selected>Jour</option>
-              <option value="1">Lundi</option>
-              <option value="2">Mardi</option>
-              <option value="3">Mercredi</option>
-              <option value="3">Jeudi</option>
-              <option value="3">Vendredi</option>
+            <select id="day" class="form-select" aria-label="Default select">
+              <option selected disabled>Jour</option>
+              <option value="Lundi">Lundi</option>
+              <option value="Mardi">Mardi</option>
+              <option value="Mercredi">Mercredi</option>
+              <option value="Jeudi">Jeudi</option>
+              <option value="Vendredi">Vendredi</option>
+              <option value="Samedi">Samedi</option>
+              <option value="Dimanche">Dimanche</option>
             </select>
           </div>
           <div class="col-2">
-            <select class="form-select" aria-label="Default select example">
-              <option selected>De</option>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="3">4</option>
-              <option value="3">5</option>
+            <select id="start_time" class="form-select" aria-label="Default select">
+              <option selected disabled>De</option>
+
             </select>
           </div>
           <div class="col-2">
-            <select class="form-select" aria-label="Default select example">
-              <option selected>A</option>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="3">4</option>
-              <option value="3">5</option>
+            <select id="end_time" class="form-select" aria-label="Default select">
+              <option selected disabled>A</option>
             </select>
           </div>
           <div class="col-2">
-            <button type="button" class="btn btn-primary">Ajouter</button>
+            <button id="btnUnav" type="button" class="btn btn-primary">Ajouter</button>
             </div>
         </div>
+       <div class="row mt-3" id="UnavailabilityContainer">
        
+       </div>
       </div>
 
     </div>
